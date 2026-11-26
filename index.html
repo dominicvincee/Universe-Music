@@ -312,6 +312,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('volume').addEventListener('input', () => audio.volume = Number($('volume').value));
   audio.volume = .85;
   if (!apiKey) setStatus('Siapkan Audius API key lewat tombol ⚙ untuk mengaktifkan katalog.');
+  setPage('home');
   renderFolders();
   loadPopular();
 })();
