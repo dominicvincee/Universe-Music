@@ -120,7 +120,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     $('tracks').style.display = page === 'create' ? 'none' : '';
     document.querySelectorAll('.navbtn').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
     if (page === 'home') loadPopular();
-    if (page === 'library') showFavoriteTracks();
+    if (page === 'library') { renderLibraryCollections(); showFavoriteTracks(); }
     if (page === 'search') { $('listHeading').textContent = 'Database search'; $('resultCount').textContent = 'Cari katalog'; }
   }
   function showFavoriteTracks() {
@@ -135,6 +135,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
   function renderLibraryCollections() {
+    try { collections = JSON.parse(localStorage.getItem('universe_music_collections') || '[]'); } catch (e) { collections = []; }
     $('libraryCollectionCount').textContent = collections.length + ' folder';
     $('libraryCollectionDetail').classList.add('hidden');
     $('libraryCollectionList').classList.remove('hidden');
