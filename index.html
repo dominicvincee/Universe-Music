@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090914">
+<meta name="description" content="UNIVERSE MUSIC — discover independent music and stream it online.">
+<title>UNIVERSE MUSIC</title>
+<style>
+:root{color-scheme:dark;--bg:#080812;--panel:#111124;--panel2:#17172e;--line:#292744;--text:#f4f2ff;--muted:#a5a2c1;--cyan:#55edff;--purple:#b58aff;--pink:#ff78d7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -15%,#29205b 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;padding-bottom:112px}button,input{font:inherit}button{cursor:pointer;color:inherit;border:0}.app{max-width:1100px;margin:auto;padding:22px 18px 30px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.3px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));color:#080812;font-size:21px;box-shadow:0 0 24px #a56cff45}.brand small{display:block;color:var(--cyan);font-size:10px;letter-spacing:3px}.round{width:42px;height:42px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);font-size:18px}.hero{padding:26px 22px;border:1px solid #45406d;border-radius:24px;background:linear-gradient(115deg,#171734ed,#17112bee 65%,#321a43bb);position:relative;overflow:hidden}.hero:after{content:"♫";position:absolute;right:18px;top:-37px;font-size:190px;color:#b58aff12;pointer-events:none}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}.hero h1{font-size:clamp(30px,7vw,54px);line-height:1.02;margin:12px 0;max-width:620px;letter-spacing:-1.8px}.hero p{color:var(--muted);max-width:470px;margin:0 0 20px}.search{display:flex;gap:8px;max-width:680px;position:relative;z-index:1}.search input,.keyinput{width:100%;min-width:0;border:1px solid var(--line);border-radius:14px;background:#090916;color:var(--text);padding:14px 15px;outline:none}.search input:focus,.keyinput:focus{border-color:var(--cyan)}.primary{background:linear-gradient(100deg,var(--cyan),#a9a0ff);color:#080812;font-weight:850;padding:0 20px;border-radius:14px;white-space:nowrap}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:27px 0 13px}.sectionhead h2{font-size:18px;margin:0}.subtle{color:var(--muted);font-size:12px}.tracks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.track{min-width:0;display:flex;align-items:center;gap:12px;padding:11px;border-radius:17px;background:linear-gradient(135deg,#15152a,#10101e);border:1px solid var(--line)}.cover{width:66px;height:66px;flex:0 0 66px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,#24234b,#52285e);display:grid;place-items:center;color:#d8d1ff;font-size:26px}.trackinfo{min-width:0;flex:1}.tracktitle{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}.trackactions{display:flex;gap:5px;align-items:center}.play,.heart{width:36px;height:36px;border-radius:50%;background:#262447;border:1px solid #39345d}.play{color:var(--cyan)}.heart.active{color:var(--pink)}.empty{padding:28px 16px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted);grid-column:1/-1}.status{margin-top:14px;color:var(--muted);font-size:12px;min-height:18px}.status.error{color:#ff9cbd}.footer{margin-top:24px;color:#787592;font-size:11px;text-align:center}.player{position:fixed;z-index:10;left:0;right:0;bottom:0;background:#0d0c1af2;backdrop-filter:blur(18px);border-top:1px solid #302a50;padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,1.2fr) minmax(0,1fr);gap:16px;align-items:center}.now{display:flex;gap:10px;align-items:center;min-width:0}.now .cover{width:48px;height:48px;flex-basis:48px}.nowmeta{min-width:0}.nowmeta strong,.nowmeta span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nowmeta span{font-size:12px;color:var(--muted)}.controls{text-align:center}.controlbuttons{display:flex;justify-content:center;align-items:center;gap:18px}.bigplay{width:40px;height:40px;border-radius:50%;background:var(--text);color:#090914;font-size:17px}.smallbtn{background:transparent;color:var(--muted);font-size:18px}.timeline{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:10px;color:var(--muted)}input[type=range]{accent-color:var(--cyan);width:100%;min-width:0}.volume{display:flex;align-items:center;gap:10px;justify-content:flex-end}.volume input{max-width:110px}.dialog{position:fixed;inset:0;z-index:30;background:#0009;display:none;align-items:center;justify-content:center;padding:20px}.dialog.open{display:flex}.dialogbox{max-width:460px;width:100%;padding:22px;border-radius:20px;border:1px solid var(--line);background:#111124;box-shadow:0 18px 70px #0009}.dialogbox h2{margin:0 0 8px}.dialogbox p{color:var(--muted);font-size:13px}.dialogbox label{display:block;margin:15px 0 6px;font-size:13px}.dialogactions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}.secondary{background:#26243e;border:1px solid var(--line);border-radius:12px;padding:11px 15px}.hint{font-size:11px!important}.hidden{display:none!important}
+@media(max-width:650px){.app{padding:16px 13px 24px}.hero{padding:22px 16px}.search{flex-direction:column}.search .primary{padding:13px}.tracks{grid-template-columns:1fr}.player{grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}.controls{grid-column:1/-1;grid-row:2}.now .cover{width:42px;height:42px;flex-basis:42px}.volume{display:none}.top{margin-bottom:17px}.hero h1{font-size:37px}.sectionhead{margin-top:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">♫</div><div>UNIVERSE MUSIC<small>YOUR SOUND. YOUR UNIVERSE.</small></div></div>
+    <button class="round" id="settingsBtn" aria-label="Pengaturan API" title="Pengaturan API">⚙</button>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">INDEPENDENT MUSIC STREAMING</div>
+    <h1>Find your next<br><span style="color:var(--cyan)">sound universe.</span></h1>
+    <p>Temukan musik baru dan dengarkan langsung. Tanpa akun pendengar.</p>
+    <form class="search" id="searchForm"><input id="searchInput" autocomplete="off" placeholder="Cari lagu atau artis..." aria-label="Cari lagu atau artis"><button class="primary" type="submit">Cari Musik ↗</button></form>
+  </section>
+  <div class="sectionhead"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
+  <div class="tracks" id="tracks"><div class="empty">Menyiapkan katalog musik…</div></div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+  <div class="footer">Music catalog and streams provided by Audius. Availability and rights are determined by the source and each track's license.</div>
+</div>
+<div class="player">
+  <div class="now"><img class="cover" id="nowCover" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%2324234b'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-size='36' fill='%2355edff'%3E%E2%99%AB%3C/text%3E%3C/svg%3E"><div class="nowmeta"><strong id="nowTitle">Pilih lagu untuk mulai</strong><span id="nowArtist">UNIVERSE MUSIC</span></div></div>
+  <div class="controls"><div class="controlbuttons"><button class="smallbtn" id="prevBtn" aria-label="Lagu sebelumnya">⏮</button><button class="bigplay" id="playBtn" aria-label="Putar atau jeda">▶</button><button class="smallbtn" id="nextBtn" aria-label="Lagu berikutnya">⏭</button></div><div class="timeline"><span id="currentTime">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="Posisi lagu"><span id="duration">0:00</span></div></div>
+  <div class="volume"><span>🔊</span><input type="range" id="volume" min="0" max="1" step=".01" value=".85" aria-label="Volume"></div>
+</div>
+<audio id="audio" preload="metadata"></audio>
+<div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">Koneksi katalog</h2><p>Masukkan <b>Audius API key</b> dari akun developer lu. Ini bukan login pengguna. Key disimpan hanya di browser perangkat ini; jangan masukkan API secret atau password.</p><label for="apiKey">Audius API key</label><input class="keyinput" id="apiKey" type="password" autocomplete="off" placeholder="Tempel API key di sini"><p class="hint">Buat key melalui <a href="https://api.audius.co/plans" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Audius API Plans</a>. Gunakan API key publik saja, jangan API secret.</p><div class="dialogactions"><button class="secondary" id="cancelSettings">Batal</button><button class="primary" id="saveKey">Simpan key</button></div></div></div>
+<script>
+(() => {
+  const API = 'https://api.audius.co/v1';
+  const $ = id => document.getElementById(id);
+  const audio = $('audio');
+  let apiKey = localStorage.getItem('universe_music_audius_key') || '';
+  let tracks = [];
+  let currentIndex = -1;
+  let favorites = new Set(JSON.parse(localStorage.getItem('universe_music_favorites') || '[]'));
+  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const coverFallback = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80"%3E%3Crect width="80" height="80" rx="12" fill="%2324234b"/%3E%3Ctext x="50%25" y="58%25" text-anchor="middle" font-size="36" fill="%2355edff"%3E%E2%99%AB%3C/text%3E%3C/svg%3E';
+  const fmt = s => { if (!Number.isFinite(s)) return '0:00'; s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+  function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
+  function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
+  async function api(path) {
+    const response = await fetch(API + path, {headers:headers()});
+    if (!response.ok) throw new Error('Audius API merespons '+response.status+'. Periksa API key atau coba lagi.');
+    const json = await response.json();
+    if (json && json.data !== undefined) return json.data;
+    throw new Error('Respons katalog tidak dikenali.');
+  }
+  function render(items) {
+    $('tracks').innerHTML = '';
+    $('resultCount').textContent = items.length+' lagu';
+    if (!items.length) { $('tracks').innerHTML = '<div class="empty">Tidak ada lagu ditemukan. Coba kata kunci lain.</div>'; return; }
+    items.forEach((track, index) => {
+      const id = String(track.id ?? '');
+      const title = escapeHTML(track.title || 'Untitled track');
+      const artist = escapeHTML(track.user?.name || track.artist || 'Unknown artist');
+      const image = track.artwork?.['480x480'] || track.artwork?.['150x150'] || track.user?.profile_picture?.['150x150'] || coverFallback;
+      const liked = favorites.has(id);
+      const card = document.createElement('article');
+      card.className = 'track';
+      card.innerHTML = '<img class="cover" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\''+coverFallback+'\'"><div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="play" aria-label="Putar" title="Putar">▶</button></div>';
+      card.querySelector('.play').addEventListener('click', () => playTrack(index));
+      card.querySelector('.heart').addEventListener('click', () => toggleFavorite(id));
+      $('tracks').appendChild(card);
+    });
+  }
+  function toggleFavorite(id) {
+    if (!id) return;
+    if (favorites.has(id)) favorites.delete(id); else favorites.add(id);
+    localStorage.setItem('universe_music_favorites', JSON.stringify([...favorites]));
+    render(tracks);
+  }
+  async function loadPopular() {
+    $('listHeading').textContent = 'Lagu populer';
+    $('tracks').innerHTML = '<div class="empty">Memuat katalog…</div>';
+    try {
+      // Audius read-only catalog endpoint. API key is optional on some deployments but
+      // a developer key is recommended/required by current API guidance.
+      const data = await api('/tracks/trending?limit=20');
+      tracks = Array.isArray(data) ? data : [];
+      render(tracks);
+      setStatus('Katalog siap. Pilih lagu untuk streaming.');
+    } catch (error) {
+      $('tracks').innerHTML = '<div class="empty">Katalog belum terhubung.</div>';
+      setStatus(apiKey ? error.message : 'Tambahkan Audius API key melalui ⚙ agar pencarian dan streaming dapat diuji.', true);
+    }
+  }
+  async function searchTracks(query) {
+    if (!query.trim()) return loadPopular();
+    $('listHeading').textContent = 'Hasil pencarian';
+    $('tracks').innerHTML = '<div class="empty">Mencari musik…</div>';
+    setStatus('');
+    try {
+      const data = await api('/tracks/search?query='+encodeURIComponent(query.trim())+'&limit=25');
+      tracks = Array.isArray(data) ? data : [];
+      render(tracks);
+      setStatus('Pencarian selesai.');
+    } catch (error) {
+      $('tracks').innerHTML = '<div class="empty">Pencarian gagal.</div>';
+      setStatus(apiKey ? error.message : 'Masukkan Audius API key lewat tombol ⚙ terlebih dahulu.', true);
+    }
+  }
+  async function playTrack(index) {
+    const track = tracks[index];
+    if (!track) return;
+    currentIndex = index;
+    $('nowTitle').textContent = track.title || 'Untitled track';
+    $('nowArtist').textContent = track.user?.name || 'Unknown artist';
+    const cover = track.artwork?.['480x480'] || track.artwork?.['150x150'] || coverFallback;
+    $('nowCover').src = cover;
+    $('nowCover').onerror = () => { $('nowCover').src = coverFallback; };
+    $('playBtn').textContent = '…';
+    setStatus('Menghubungkan streaming…');
+    try {
+      const url = API + '/tracks/' + encodeURIComponent(track.id) + '/stream';
+      audio.pause();
+      audio.src = url;
+      audio.load();
+      await audio.play();
+      $('playBtn').textContent = 'Ⅱ';
+      setStatus('Memutar melalui Audius.');
+    } catch (error) {
+      $('playBtn').textContent = '▶';
+      setStatus('Streaming gagal dimulai. Cek API key, koneksi, atau ketersediaan lagu. '+error.message, true);
+    }
+  }
+  $('searchForm').addEventListener('submit', e => { e.preventDefault(); searchTracks($('searchInput').value); });
+  $('settingsBtn').addEventListener('click', () => { $('apiKey').value = apiKey; $('settingsDialog').classList.add('open'); });
+  $('cancelSettings').addEventListener('click', () => $('settingsDialog').classList.remove('open'));
+  $('settingsDialog').addEventListener('click', e => { if (e.target === $('settingsDialog')) $('settingsDialog').classList.remove('open'); });
+  $('saveKey').addEventListener('click', () => {
+    apiKey = $('apiKey').value.trim();
+    if (apiKey) localStorage.setItem('universe_music_audius_key', apiKey);
+    else localStorage.removeItem('universe_music_audius_key');
+    $('settingsDialog').classList.remove('open');
+    loadPopular();
+  });
+  $('playBtn').addEventListener('click', async () => {
+    if (!audio.src) { if (currentIndex >= 0) return playTrack(currentIndex); setStatus('Pilih lagu dari katalog terlebih dahulu.'); return; }
+    if (audio.paused) { try { await audio.play(); } catch(e) { setStatus('Tidak bisa melanjutkan pemutaran.', true); } }
+    else audio.pause();
+  });
+  $('prevBtn').addEventListener('click', () => { if (currentIndex > 0) playTrack(currentIndex - 1); });
+  $('nextBtn').addEventListener('click', () => { if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1); });
+  audio.addEventListener('play', () => $('playBtn').textContent = 'Ⅱ');
+  audio.addEventListener('pause', () => $('playBtn').textContent = '▶');
+  audio.addEventListener('ended', () => { if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1); });
+  audio.addEventListener('timeupdate', () => { if (audio.duration && Number.isFinite(audio.duration)) { $('seek').value = Math.round(audio.currentTime/audio.duration*1000); $('currentTime').textContent = fmt(audio.currentTime); $('duration').textContent = fmt(audio.duration); } });
+  $('seek').addEventListener('input', () => { if (audio.duration && Number.isFinite(audio.duration)) audio.currentTime = Number($('seek').value)/1000*audio.duration; });
+  $('volume').addEventListener('input', () => audio.volume = Number($('volume').value));
+  audio.volume = .85;
+  if (!apiKey) setStatus('Siapkan Audius API key lewat tombol ⚙ untuk mengaktifkan katalog.');
+  loadPopular();
+})();
+</script>
+</body>
+</html>
