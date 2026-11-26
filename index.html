@@ -69,6 +69,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     </form>
     <div class="sectionhead"><h2>Koleksi gue</h2><span class="subtle" id="collectionCount">0 folder</span></div>
     <div id="collectionList" class="collection-list"><div class="empty">Belum ada folder. Buat koleksi pertamamu di atas.</div></div>
+    <div id="collectionDetail" class="hidden"><div class="sectionhead"><button class="secondary" id="backCollections">← Semua koleksi</button><span class="subtle" id="detailCount">0 lagu</span></div><h2 id="detailTitle" style="font-size:20px;margin:8px 0 12px"></h2><div id="detailTracks" class="tracks"></div><p class="library-note">Untuk menambahkan lagu, buka Home atau Search lalu tekan tombol ＋ pada lagu.</p></div>
   </section>
   <div class="sectionhead" id="catalogHeading"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
   <div class="tracks" id="tracks"><div class="empty">Menyiapkan katalog musik…</div></div>
@@ -88,6 +89,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <button class="navbtn" data-page="settings"><span class="navicon">◈</span><span>Settings</span></button>
 </nav>
 <audio id="audio" preload="metadata"></audio>
+<div class="dialog" id="collectionDialog" role="dialog" aria-modal="true" aria-labelledby="collectionDialogTitle"><div class="dialogbox"><h2 id="collectionDialogTitle">Tambah ke folder</h2><p>Pilih koleksi tempat lagu ini disimpan.</p><div id="collectionChoices"></div><div class="dialogactions"><button class="secondary" id="cancelCollection">Batal</button></div></div></div>
 <div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">Koneksi katalog</h2><p>Masukkan <b>Audius API key</b> dari akun developer lu. Ini bukan login pengguna. Key disimpan hanya di browser perangkat ini; jangan masukkan API secret atau password.</p><label for="apiKey">Audius API key</label><input class="keyinput" id="apiKey" type="password" autocomplete="off" placeholder="Tempel API key di sini"><p class="hint">Buat key melalui <a href="https://api.audius.co/plans" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Audius API Plans</a>. Gunakan API key publik saja, jangan API secret.</p><div class="dialogactions"><button class="secondary" id="cancelSettings">Batal</button><button class="primary" id="saveKey">Simpan key</button></div></div></div>
 <script>
 (() => {
@@ -131,11 +133,15 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('showPopular').addEventListener('click', loadPopular);
   function renderCollections() {
     $('collectionCount').textContent = collections.length + (collections.length === 1 ? ' folder' : ' folder');
+    $('collectionForm').classList.remove('hidden');
+    $('collectionDetail').classList.add('hidden');
+    $('collectionList').classList.remove('hidden');
     if (!collections.length) {
       $('collectionList').innerHTML = '<div class="empty">Belum ada folder. Buat koleksi pertamamu di atas.</div>';
       return;
     }
-    $('collectionList').innerHTML = collections.map(item => '<article class="collection-card"><div class="collection-icon">▣</div><div class="collection-meta"><strong>'+escapeHTML(item.name)+'</strong><span>'+(Array.isArray(item.tracks) ? item.tracks.length : 0)+' lagu</span></div></article>').join('');
+    $('collectionList').innerHTML = collections.map(item => '<article class="collection-card" data-id="'+escapeHTML(item.id)+'"><div class="collection-icon">▣</div><div class="collection-meta"><strong>'+escapeHTML(item.name)+'</strong><span>'+(Array.isArray(item.tracks) ? item.tracks.length : 0)+' lagu</span><span style="color:var(--cyan);margin-top:7px">BUKA KOLEKSI ↗</span></div></article>').join('');
+    $('collectionList').querySelectorAll('.collection-card').forEach(card => card.addEventListener('click', () => openCollection(card.dataset.id)));
   }
   $('collectionForm').addEventListener('submit', e => {
     e.preventDefault();
@@ -152,6 +158,41 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     setStatus('Folder "' + name + '" berhasil dibuat dan disimpan di perangkat ini.');
   });
   renderCollections();
+  let pendingCollectionTrack = null;
+  function openCollectionPicker(track) {
+    if (!collections.length) { setStatus('Buat folder terlebih dahulu di menu Create.', true); setPage('create'); return; }
+    pendingCollectionTrack = track;
+    $('collectionChoices').innerHTML = collections.map(item => '<button class="collection-choice secondary" data-id="'+escapeHTML(item.id)+'" style="display:block;width:100%;text-align:left;margin-top:8px">▣ '+escapeHTML(item.name)+' <span style="float:right;color:var(--muted)">'+(Array.isArray(item.tracks)?item.tracks.length:0)+' lagu</span></button>').join('');
+    $('collectionChoices').querySelectorAll('button').forEach(button => button.addEventListener('click', () => {
+      const collection = collections.find(item => item.id === button.dataset.id);
+      if (!collection || !pendingCollectionTrack) return;
+      collection.tracks = Array.isArray(collection.tracks) ? collection.tracks : [];
+      if (collection.tracks.some(song => String(song.id) === String(pendingCollectionTrack.id))) setStatus('Lagu itu sudah ada di folder '+collection.name+'.');
+      else {
+        collection.tracks.push({id:pendingCollectionTrack.id,title:pendingCollectionTrack.title,user:pendingCollectionTrack.user || {name:pendingCollectionTrack.artist || 'Unknown artist'},artwork:pendingCollectionTrack.artwork || null});
+        localStorage.setItem('universe_music_collections', JSON.stringify(collections));
+        renderCollections();
+        setStatus('Lagu ditambahkan ke folder '+collection.name+'.');
+      }
+      $('collectionDialog').classList.remove('open');
+      pendingCollectionTrack = null;
+    }));
+    $('collectionDialog').classList.add('open');
+  }
+  function openCollection(id) {
+    const collection = collections.find(item => item.id === id);
+    if (!collection) return;
+    $('collectionForm').classList.add('hidden');
+    $('collectionList').classList.add('hidden');
+    $('collectionDetail').classList.remove('hidden');
+    $('detailTitle').textContent = collection.name;
+    const songs = Array.isArray(collection.tracks) ? collection.tracks : [];
+    $('detailCount').textContent = songs.length + ' lagu';
+    if (!songs.length) { $('detailTracks').innerHTML = '<div class="empty">Folder ini masih kosong. Buka Home atau Search, lalu tekan ＋ pada lagu untuk menambahkannya.</div>'; return; }
+    $('detailTracks').innerHTML = songs.map((song, index) => '<article class="track"><img class="cover" alt="" src="'+escapeHTML(song.artwork?.['150x150'] || song.artwork?.['480x480'] || coverFallback)+'"><div class="trackinfo"><div class="tracktitle">'+escapeHTML(song.title || 'Untitled track')+'</div><div class="artist">'+escapeHTML(song.user?.name || song.artist || 'Unknown artist')+'</div></div><div class="trackactions"><button class="play" data-index="'+index+'" aria-label="Putar">▶</button></div></article>').join('');
+    $('detailTracks').querySelectorAll('.play').forEach(button => button.addEventListener('click', () => { tracks = songs; playTrack(Number(button.dataset.index)); }));
+  }
+  $('backCollections').addEventListener('click', renderCollections);
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
   function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
   async function api(path) {
@@ -173,8 +214,9 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
       const liked = favorites.has(id);
       const card = document.createElement('article');
       card.className = 'track';
-      card.innerHTML = '<img class="cover" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\''+coverFallback+'\'"><div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="play" aria-label="Putar" title="Putar">▶</button></div>';
+      card.innerHTML = '<img class="cover" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\''+coverFallback+'\'"><div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="add-to-collection" aria-label="Tambah ke folder" title="Tambah ke folder">＋</button><button class="play" aria-label="Putar" title="Putar">▶</button></div>';
       card.querySelector('.play').addEventListener('click', () => playTrack(index));
+      card.querySelector('.add-to-collection').addEventListener('click', () => openCollectionPicker(items[index]));
       card.querySelector('.heart').addEventListener('click', () => toggleFavorite(id));
       $('tracks').appendChild(card);
     });
@@ -242,6 +284,8 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); searchTracks($('searchInput').value); });
   $('settingsBtn').addEventListener('click', () => { $('apiKey').value = apiKey; $('settingsDialog').classList.add('open'); });
   $('cancelSettings').addEventListener('click', () => $('settingsDialog').classList.remove('open'));
+  $('cancelCollection').addEventListener('click', () => { $('collectionDialog').classList.remove('open'); pendingCollectionTrack = null; });
+  $('collectionDialog').addEventListener('click', e => { if (e.target === $('collectionDialog')) { $('collectionDialog').classList.remove('open'); pendingCollectionTrack = null; } });
   $('settingsDialog').addEventListener('click', e => { if (e.target === $('settingsDialog')) $('settingsDialog').classList.remove('open'); });
   $('saveKey').addEventListener('click', () => {
     apiKey = $('apiKey').value.trim();
