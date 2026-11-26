@@ -10,6 +10,24 @@
 :root{color-scheme:dark;--bg:#080812;--panel:#111124;--panel2:#17172e;--line:#292744;--text:#f4f2ff;--muted:#a5a2c1;--cyan:#55edff;--purple:#b58aff;--pink:#ff78d7}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -15%,#29205b 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;padding-bottom:112px}button,input{font:inherit}button{cursor:pointer;color:inherit;border:0}.app{max-width:1100px;margin:auto;padding:22px 18px 30px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.3px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));color:#080812;font-size:21px;box-shadow:0 0 24px #a56cff45}.brand small{display:block;color:var(--cyan);font-size:10px;letter-spacing:3px}.round{width:42px;height:42px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);font-size:18px}.hero{padding:26px 22px;border:1px solid #45406d;border-radius:24px;background:linear-gradient(115deg,#171734ed,#17112bee 65%,#321a43bb);position:relative;overflow:hidden}.hero:after{content:"♫";position:absolute;right:18px;top:-37px;font-size:190px;color:#b58aff12;pointer-events:none}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}.hero h1{font-size:clamp(30px,7vw,54px);line-height:1.02;margin:12px 0;max-width:620px;letter-spacing:-1.8px}.hero p{color:var(--muted);max-width:470px;margin:0 0 20px}.search{display:flex;gap:8px;max-width:680px;position:relative;z-index:1}.search input,.keyinput{width:100%;min-width:0;border:1px solid var(--line);border-radius:14px;background:#090916;color:var(--text);padding:14px 15px;outline:none}.search input:focus,.keyinput:focus{border-color:var(--cyan)}.primary{background:linear-gradient(100deg,var(--cyan),#a9a0ff);color:#080812;font-weight:850;padding:0 20px;border-radius:14px;white-space:nowrap}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:27px 0 13px}.sectionhead h2{font-size:18px;margin:0}.subtle{color:var(--muted);font-size:12px}.tracks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.track{min-width:0;display:flex;align-items:center;gap:12px;padding:11px;border-radius:17px;background:linear-gradient(135deg,#15152a,#10101e);border:1px solid var(--line)}.cover{width:66px;height:66px;flex:0 0 66px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,#24234b,#52285e);display:grid;place-items:center;color:#d8d1ff;font-size:26px}.trackinfo{min-width:0;flex:1}.tracktitle{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}.trackactions{display:flex;gap:5px;align-items:center}.play,.heart{width:36px;height:36px;border-radius:50%;background:#262447;border:1px solid #39345d}.play{color:var(--cyan)}.heart.active{color:var(--pink)}.empty{padding:28px 16px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted);grid-column:1/-1}.status{margin-top:14px;color:var(--muted);font-size:12px;min-height:18px}.status.error{color:#ff9cbd}.footer{margin-top:24px;color:#787592;font-size:11px;text-align:center}.player{position:fixed;z-index:10;left:0;right:0;bottom:0;background:#0d0c1af2;backdrop-filter:blur(18px);border-top:1px solid #302a50;padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,1.2fr) minmax(0,1fr);gap:16px;align-items:center}.now{display:flex;gap:10px;align-items:center;min-width:0}.now .cover{width:48px;height:48px;flex-basis:48px}.nowmeta{min-width:0}.nowmeta strong,.nowmeta span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nowmeta span{font-size:12px;color:var(--muted)}.controls{text-align:center}.controlbuttons{display:flex;justify-content:center;align-items:center;gap:18px}.bigplay{width:40px;height:40px;border-radius:50%;background:var(--text);color:#090914;font-size:17px}.smallbtn{background:transparent;color:var(--muted);font-size:18px}.timeline{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:10px;color:var(--muted)}input[type=range]{accent-color:var(--cyan);width:100%;min-width:0}.volume{display:flex;align-items:center;gap:10px;justify-content:flex-end}.volume input{max-width:110px}.dialog{position:fixed;inset:0;z-index:30;background:#0009;display:none;align-items:center;justify-content:center;padding:20px}.dialog.open{display:flex}.dialogbox{max-width:460px;width:100%;padding:22px;border-radius:20px;border:1px solid var(--line);background:#111124;box-shadow:0 18px 70px #0009}.dialogbox h2{margin:0 0 8px}.dialogbox p{color:var(--muted);font-size:13px}.dialogbox label{display:block;margin:15px 0 6px;font-size:13px}.dialogactions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}.secondary{background:#26243e;border:1px solid var(--line);border-radius:12px;padding:11px 15px}.hint{font-size:11px!important}.hidden{display:none!important}
 @media(max-width:650px){.app{padding:16px 13px 24px}.hero{padding:22px 16px}.search{flex-direction:column}.search .primary{padding:13px}.tracks{grid-template-columns:1fr}.player{grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}.controls{grid-column:1/-1;grid-row:2}.now .cover{width:42px;height:42px;flex-basis:42px}.volume{display:none}.top{margin-bottom:17px}.hero h1{font-size:37px}.sectionhead{margin-top:22px}}
+
+/* NEO-SONIC-inspired mobile interface */
+body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),radial-gradient(ellipse at 100% 30%,#42143f55 0,transparent 36%),var(--bg);padding-bottom:170px}
+.app{max-width:820px;padding-top:15px}.top{margin-bottom:16px}.brand{letter-spacing:1px}.logo{border-radius:50%;box-shadow:0 0 22px #55edff55}
+.eyebrow{letter-spacing:2px}.hero{padding:0;border:0;border-radius:0;background:transparent;overflow:visible}.hero:after{display:none}.hero h1{font-size:clamp(27px,6vw,42px);letter-spacing:-.8px;margin:8px 0}.hero p{margin-bottom:0}
+.featured{display:flex;position:relative;min-height:180px;overflow:hidden;border:1px solid #55edffb5;border-radius:16px;margin:14px 0 22px;background:linear-gradient(100deg,#06111eeF 0%,#071525d9 48%,#4b1748a8 100%);box-shadow:0 0 22px #55edff20}
+.featured-art{width:43%;min-height:180px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#55edff88,transparent 32%),linear-gradient(140deg,#173b58,#32143e 70%,#0a0b19);font-size:76px;position:relative}
+.featured-art:after{content:"";position:absolute;inset:12px;border:1px solid #55edff70;border-radius:10px}
+.featured-copy{padding:19px 14px;align-self:center;flex:1;min-width:0}.featured-copy h2{font-size:clamp(19px,4vw,27px);line-height:1.08;margin:9px 0}.featured-copy p{font-size:11px;color:#c4d6e8;margin:0 0 13px}.featured-copy .primary{padding:10px 14px;border-radius:9px;font-size:12px}
+.sectionhead{margin:21px 0 11px}.sectionhead h2{font-size:17px;text-transform:uppercase;letter-spacing:.7px}.subtle{color:var(--cyan)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;border:1px solid #35556b;border-radius:8px;background:linear-gradient(120deg,#142a3b,#17172d);padding:9px 12px;font-size:11px;font-weight:800;letter-spacing:.4px;color:#d8f8ff}.chip:active,.chip:hover{border-color:var(--cyan);box-shadow:0 0 12px #55edff30}
+.tracks{grid-template-columns:1fr;gap:9px}.track{border-radius:12px;background:#101321d9;border-color:#242c43;padding:9px}.cover{border-radius:8px}.play{background:#123b47;border-color:#276a79}.search-panel,.create-panel{display:none}.search-panel.active,.create-panel.active{display:block}.library-note{color:var(--muted);font-size:12px;margin:3px 0 14px}
+.console{border:1px solid #255e6d;border-radius:13px;padding:12px;background:linear-gradient(145deg,#07121e,#11162a);box-shadow:inset 0 0 22px #55edff10}.radar{height:135px;border:1px solid #285c68;border-radius:9px;display:grid;place-items:center;position:relative;overflow:hidden;background:repeating-radial-gradient(circle at center,transparent 0 17px,#24536588 18px 19px),linear-gradient(120deg,#081722,#10152a)}.radar:before{content:"";height:1px;width:100%;position:absolute;background:#55edff88}.radar:after{content:"";width:1px;height:100%;position:absolute;background:#55edff88}.radar-icon{font-size:38px;color:var(--cyan);text-shadow:0 0 22px var(--cyan)}.wave{height:64px;display:flex;align-items:center;justify-content:center;gap:3px;margin:12px 0}.wave i{display:block;width:4px;border-radius:5px;background:linear-gradient(var(--cyan),var(--purple),var(--pink));box-shadow:0 0 8px #55edff35}.console-tabs{display:flex;justify-content:space-around;color:var(--cyan);font-size:10px;font-weight:800;margin:12px 0}
+.bottomnav{position:fixed;z-index:12;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:#090b17f5;backdrop-filter:blur(20px);border-top:1px solid #25364c}
+.navbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:transparent;color:#8589a5;font-size:10px;padding:4px 0}.navbtn .navicon{font-size:21px;line-height:1.1}.navbtn.active{color:var(--cyan);text-shadow:0 0 12px #55edff80}.navbtn:last-child .navicon{color:var(--pink)}
+.player{bottom:61px;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px 12px;background:#111321f5;border-top:1px solid #31505e}.player .controls{grid-column:2;grid-row:1}.player .controlbuttons{gap:9px}.player .bigplay{width:35px;height:35px;background:var(--cyan)}.player .smallbtn{font-size:15px}.player .timeline{display:none}.player .volume{display:none}.player .now .cover{width:40px;height:40px;flex-basis:40px}.player .nowmeta strong{font-size:12px}.player .nowmeta span{font-size:10px}
+@media(min-width:650px){.app{padding-left:22px;padding-right:22px}.tracks{grid-template-columns:repeat(2,minmax(0,1fr))}.player{bottom:0;grid-template-columns:minmax(0,1fr) minmax(140px,1fr) minmax(0,1fr)}.player .controls{grid-column:auto;grid-row:auto}.player .timeline{display:flex}.player .volume{display:flex}.bottomnav{display:none}body{padding-bottom:120px}}
+@media(max-width:380px){.featured-art{width:36%;font-size:56px}.featured-copy{padding:12px 10px}.featured-copy h2{font-size:18px}.player .nowmeta{max-width:155px}}
 </style>
 </head>
 <body>
@@ -18,13 +36,34 @@
     <div class="brand"><div class="logo">♫</div><div>UNIVERSE MUSIC<small>YOUR SOUND. YOUR UNIVERSE.</small></div></div>
     <button class="round" id="settingsBtn" aria-label="Pengaturan API" title="Pengaturan API">⚙</button>
   </header>
-  <section class="hero">
-    <div class="eyebrow">INDEPENDENT MUSIC STREAMING</div>
-    <h1>Find your next<br><span style="color:var(--cyan)">sound universe.</span></h1>
-    <p>Temukan musik baru dan dengarkan langsung. Tanpa akun pendengar.</p>
-    <form class="search" id="searchForm"><input id="searchInput" autocomplete="off" placeholder="Cari lagu atau artis..." aria-label="Cari lagu atau artis"><button class="primary" type="submit">Cari Musik ↗</button></form>
+  <section class="hero" id="homeHero">
+    <div class="eyebrow">WELCOME TO YOUR SOUND UNIVERSE</div>
+    <div class="featured">
+      <div class="featured-art" aria-hidden="true">♫</div>
+      <div class="featured-copy"><div class="eyebrow">NEO-SOUND SYSTEM</div><h2>NEO·SOUND<br>OF THE NIGHT</h2><p>Jelajahi suara baru dari semesta musikmu.</p><button class="primary" id="featuredPlay">▶ DENGARKAN</button></div>
+    </div>
+    <div class="sectionhead"><h2>Sector maps</h2><span class="subtle">GENRES</span></div>
+    <div class="chips">
+      <button class="chip" data-query="Pop Indonesia">POP INDONESIA</button><button class="chip" data-query="Dangdut Koplo">DANGDUT / KOPLO</button><button class="chip" data-query="Indie Indonesia">INDIE</button><button class="chip" data-query="Lagu viral Indonesia">VIRAL</button><button class="chip" data-query="Synthwave">SYNTHWAVE</button>
+    </div>
+    <div class="sectionhead"><h2>Daily cycles</h2><span class="subtle">TRENDING</span></div>
   </section>
-  <div class="sectionhead"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
+  <section class="search-panel" id="searchPanel">
+    <div class="eyebrow">SEARCH DATABASE</div><h1 style="font-size:29px;margin:7px 0 15px">Cari musik</h1>
+    <form class="search" id="searchForm"><input id="searchInput" autocomplete="off" placeholder="Cari lagu atau artis..." aria-label="Cari lagu atau artis"><button class="primary" type="submit">Cari ↗</button></form>
+    <div class="sectionhead"><h2>Sector maps</h2></div><div class="chips">
+      <button class="chip" data-query="Pop Indonesia">POP INDONESIA</button><button class="chip" data-query="Dangdut Koplo">DANGDUT / KOPLO</button><button class="chip" data-query="Indie Indonesia">INDIE</button><button class="chip" data-query="Lagu viral Indonesia">VIRAL</button><button class="chip" data-query="Cyberpunk beats">CYBERPUNK BEATS</button>
+    </div>
+  </section>
+  <section class="search-panel" id="libraryPanel">
+    <div class="eyebrow">PERSONAL COLLECTION</div><h1 style="font-size:29px;margin:7px 0">Digital vault</h1><p class="library-note">Lagu favorit yang disimpan di perangkat ini.</p>
+    <div class="chips"><button class="chip" id="showFavorites">♥ FAVORIT</button><button class="chip" id="showPopular">♫ LAGU POPULER</button></div>
+  </section>
+  <section class="create-panel" id="createPanel">
+    <div class="eyebrow">CREATIVE INTERFACE</div><h1 style="font-size:29px;margin:7px 0 15px">Interface console</h1>
+    <div class="console"><div class="radar"><span class="radar-icon">◎</span></div><div class="console-tabs"><span>INSTRUMENTS</span><span>EFFECTS</span><span>ARRANGEMENT</span></div><div class="eyebrow">PROJECT CORE · AUDIO VISUALIZER</div><div class="wave" id="wave"></div><p class="library-note">Console visual untuk identitas UNIVERSE MUSIC. Fitur produksi dan render audio belum aktif.</p><button class="primary" style="width:100%;padding:13px" id="consoleButton">RENDER INTERFACE</button></div>
+  </section>
+  <div class="sectionhead" id="catalogHeading"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
   <div class="tracks" id="tracks"><div class="empty">Menyiapkan katalog musik…</div></div>
   <div class="status" id="status" role="status" aria-live="polite"></div>
   <div class="footer">Music catalog and streams provided by Audius. Availability and rights are determined by the source and each track's license.</div>
@@ -34,6 +73,13 @@
   <div class="controls"><div class="controlbuttons"><button class="smallbtn" id="prevBtn" aria-label="Lagu sebelumnya">⏮</button><button class="bigplay" id="playBtn" aria-label="Putar atau jeda">▶</button><button class="smallbtn" id="nextBtn" aria-label="Lagu berikutnya">⏭</button></div><div class="timeline"><span id="currentTime">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="Posisi lagu"><span id="duration">0:00</span></div></div>
   <div class="volume"><span>🔊</span><input type="range" id="volume" min="0" max="1" step=".01" value=".85" aria-label="Volume"></div>
 </div>
+<nav class="bottomnav" aria-label="Navigasi utama">
+  <button class="navbtn active" data-page="home"><span class="navicon">⌂</span><span>Home</span></button>
+  <button class="navbtn" data-page="search"><span class="navicon">⌕</span><span>Search</span></button>
+  <button class="navbtn" data-page="library"><span class="navicon">▣</span><span>Library</span></button>
+  <button class="navbtn" data-page="create"><span class="navicon">＋</span><span>Create</span></button>
+  <button class="navbtn" data-page="settings"><span class="navicon">◈</span><span>Settings</span></button>
+</nav>
 <audio id="audio" preload="metadata"></audio>
 <div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">Koneksi katalog</h2><p>Masukkan <b>Audius API key</b> dari akun developer lu. Ini bukan login pengguna. Key disimpan hanya di browser perangkat ini; jangan masukkan API secret atau password.</p><label for="apiKey">Audius API key</label><input class="keyinput" id="apiKey" type="password" autocomplete="off" placeholder="Tempel API key di sini"><p class="hint">Buat key melalui <a href="https://api.audius.co/plans" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Audius API Plans</a>. Gunakan API key publik saja, jangan API secret.</p><div class="dialogactions"><button class="secondary" id="cancelSettings">Batal</button><button class="primary" id="saveKey">Simpan key</button></div></div></div>
 <script>
@@ -48,6 +94,36 @@
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const coverFallback = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80"%3E%3Crect width="80" height="80" rx="12" fill="%2324234b"/%3E%3Ctext x="50%25" y="58%25" text-anchor="middle" font-size="36" fill="%2355edff"%3E%E2%99%AB%3C/text%3E%3C/svg%3E';
   const fmt = s => { if (!Number.isFinite(s)) return '0:00'; s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+  let currentPage = 'home';
+  function setPage(page) {
+    if (page === 'settings') { $('settingsBtn').click(); return; }
+    currentPage = page;
+    $('homeHero').style.display = page === 'home' ? '' : 'none';
+    $('searchPanel').classList.toggle('active', page === 'search' || page === 'library');
+    $('searchPanel').style.display = page === 'library' ? 'none' : '';
+    $('libraryPanel').classList.toggle('active', page === 'library');
+    $('createPanel').classList.toggle('active', page === 'create');
+    $('catalogHeading').style.display = page === 'create' ? 'none' : '';
+    $('tracks').style.display = page === 'create' ? 'none' : '';
+    document.querySelectorAll('.navbtn').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
+    if (page === 'home') loadPopular();
+    if (page === 'library') showFavoriteTracks();
+    if (page === 'search') { $('listHeading').textContent = 'Database search'; $('resultCount').textContent = 'Cari katalog'; }
+  }
+  function showFavoriteTracks() {
+    const saved = tracks.filter(t => favorites.has(String(t.id)));
+    $('listHeading').textContent = 'Lagu favorit';
+    render(saved);
+    if (!saved.length) { $('tracks').innerHTML = '<div class="empty">Belum ada lagu favorit di katalog yang sedang dimuat. Cari lagu lalu tekan ♡ untuk menyimpan.</div>'; $('resultCount').textContent = '0 lagu'; }
+  }
+  document.querySelectorAll('.navbtn').forEach(btn => btn.addEventListener('click', () => setPage(btn.dataset.page)));
+  document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; searchTracks(btn.dataset.query); }));
+  $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
+  $('showFavorites').addEventListener('click', showFavoriteTracks);
+  $('showPopular').addEventListener('click', loadPopular);
+  $('consoleButton').addEventListener('click', () => setStatus('Interface console siap. Fitur render audio akan dibuat pada tahap berikutnya.'));
+  const waveHeights = [18,27,38,24,44,53,30,19,41,58,35,22,49,32,62,38,25,46,31,18,37,55,29,42,21,34,48,26,39,16];
+  $('wave').innerHTML = waveHeights.map(h => '<i style="height:'+h+'px"></i>').join('');
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
   function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
   async function api(path) {
@@ -135,7 +211,7 @@
       setStatus('Streaming gagal dimulai. Cek API key, koneksi, atau ketersediaan lagu. '+error.message, true);
     }
   }
-  $('searchForm').addEventListener('submit', e => { e.preventDefault(); searchTracks($('searchInput').value); });
+  $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); searchTracks($('searchInput').value); });
   $('settingsBtn').addEventListener('click', () => { $('apiKey').value = apiKey; $('settingsDialog').classList.add('open'); });
   $('cancelSettings').addEventListener('click', () => $('settingsDialog').classList.remove('open'));
   $('settingsDialog').addEventListener('click', e => { if (e.target === $('settingsDialog')) $('settingsDialog').classList.remove('open'); });
