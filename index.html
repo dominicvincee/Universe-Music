@@ -56,8 +56,11 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     </div>
   </section>
   <section class="search-panel" id="libraryPanel">
-    <div class="eyebrow">PERSONAL COLLECTION</div><h1 style="font-size:29px;margin:7px 0">Digital vault</h1><p class="library-note">Lagu favorit yang disimpan di perangkat ini.</p>
+    <div class="eyebrow">PERSONAL COLLECTION</div><h1 style="font-size:29px;margin:7px 0">Digital vault</h1><p class="library-note">Lagu favorit dan folder buatan lu yang disimpan di perangkat ini.</p>
     <div class="chips"><button class="chip" id="showFavorites">♥ FAVORIT</button><button class="chip" id="showPopular">♫ LAGU POPULER</button></div>
+    <div class="sectionhead"><h2>Folder gue</h2><span class="subtle" id="libraryCollectionCount">0 folder</span></div>
+    <div id="libraryCollectionList" class="collection-list"><div class="empty">Belum ada folder. Buat folder lewat menu Create.</div></div>
+    <div id="libraryCollectionDetail" class="hidden"><div class="sectionhead"><button class="secondary" id="libraryBackCollections">← Semua folder</button><span class="subtle" id="libraryDetailCount">0 lagu</span></div><h2 id="libraryDetailTitle" style="font-size:20px;margin:8px 0 12px"></h2><div id="libraryDetailTracks" class="tracks"></div></div>
   </section>
   <section class="create-panel" id="createPanel">
     <div class="eyebrow">PERSONAL COLLECTIONS</div>
@@ -131,8 +134,36 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
+  function renderLibraryCollections() {
+    $('libraryCollectionCount').textContent = collections.length + ' folder';
+    $('libraryCollectionDetail').classList.add('hidden');
+    $('libraryCollectionList').classList.remove('hidden');
+    if (!collections.length) {
+      $('libraryCollectionList').innerHTML = '<div class="empty">Belum ada folder. Buat folder lewat menu Create.</div>';
+      return;
+    }
+    $('libraryCollectionList').innerHTML = collections.map(item => '<article class="collection-card" data-id="'+escapeHTML(item.id)+'"><div class="collection-icon">▣</div><div class="collection-meta"><strong>'+escapeHTML(item.name)+'</strong><span>'+(Array.isArray(item.tracks)?item.tracks.length:0)+' lagu</span><span style="color:var(--cyan);margin-top:7px">BUKA FOLDER ↗</span></div></article>').join('');
+    $('libraryCollectionList').querySelectorAll('.collection-card').forEach(card => card.addEventListener('click', () => openLibraryCollection(card.dataset.id)));
+  }
+  function openLibraryCollection(id) {
+    const collection = collections.find(item => item.id === id);
+    if (!collection) return;
+    $('libraryCollectionList').classList.add('hidden');
+    $('libraryCollectionDetail').classList.remove('hidden');
+    $('libraryDetailTitle').textContent = collection.name;
+    const songs = Array.isArray(collection.tracks) ? collection.tracks : [];
+    $('libraryDetailCount').textContent = songs.length + ' lagu';
+    if (!songs.length) {
+      $('libraryDetailTracks').innerHTML = '<div class="empty">Folder ini masih kosong. Tambahkan lagu lewat Home atau Search dengan tombol ＋.</div>';
+      return;
+    }
+    $('libraryDetailTracks').innerHTML = songs.map((song,index) => '<article class="track"><img class="cover" alt="" src="'+escapeHTML(song.artwork?.['150x150'] || song.artwork?.['480x480'] || coverFallback)+'"><div class="trackinfo"><div class="tracktitle">'+escapeHTML(song.title || 'Untitled track')+'</div><div class="artist">'+escapeHTML(song.user?.name || song.artist || 'Unknown artist')+'</div></div><div class="trackactions"><button class="play" data-index="'+index+'" aria-label="Putar">▶</button></div></article>').join('');
+    $('libraryDetailTracks').querySelectorAll('.play').forEach(button => button.addEventListener('click', () => { tracks = songs; playTrack(Number(button.dataset.index)); }));
+  }
+  $('libraryBackCollections').addEventListener('click', renderLibraryCollections);
   function renderCollections() {
     $('collectionCount').textContent = collections.length + (collections.length === 1 ? ' folder' : ' folder');
+    renderLibraryCollections();
     $('collectionForm').classList.remove('hidden');
     $('collectionDetail').classList.add('hidden');
     $('collectionList').classList.remove('hidden');
