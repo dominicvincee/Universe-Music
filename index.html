@@ -22,7 +22,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
 .sectionhead{margin:21px 0 11px}.sectionhead h2{font-size:17px;text-transform:uppercase;letter-spacing:.7px}.subtle{color:var(--cyan)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;border:1px solid #35556b;border-radius:8px;background:linear-gradient(120deg,#142a3b,#17172d);padding:9px 12px;font-size:11px;font-weight:800;letter-spacing:.4px;color:#d8f8ff}.chip:active,.chip:hover{border-color:var(--cyan);box-shadow:0 0 12px #55edff30}
 .tracks{grid-template-columns:1fr;gap:9px}.track{border-radius:12px;background:#101321d9;border-color:#242c43;padding:9px}.cover{border-radius:8px}.play{background:#123b47;border-color:#276a79}.search-panel,.create-panel{display:none}.search-panel.active,.create-panel.active{display:block}.library-note{color:var(--muted);font-size:12px;margin:3px 0 14px}
-.console{border:1px solid #255e6d;border-radius:13px;padding:12px;background:linear-gradient(145deg,#07121e,#11162a);box-shadow:inset 0 0 22px #55edff10}.radar{height:135px;border:1px solid #285c68;border-radius:9px;display:grid;place-items:center;position:relative;overflow:hidden;background:repeating-radial-gradient(circle at center,transparent 0 17px,#24536588 18px 19px),linear-gradient(120deg,#081722,#10152a)}.radar:before{content:"";height:1px;width:100%;position:absolute;background:#55edff88}.radar:after{content:"";width:1px;height:100%;position:absolute;background:#55edff88}.radar-icon{font-size:38px;color:var(--cyan);text-shadow:0 0 22px var(--cyan)}.wave{height:64px;display:flex;align-items:center;justify-content:center;gap:3px;margin:12px 0}.wave i{display:block;width:4px;border-radius:5px;background:linear-gradient(var(--cyan),var(--purple),var(--pink));box-shadow:0 0 8px #55edff35}.console-tabs{display:flex;justify-content:space-around;color:var(--cyan);font-size:10px;font-weight:800;margin:12px 0}
+.collection-form{display:flex;gap:8px;align-items:stretch;margin:14px 0 20px}.collection-form .keyinput{flex:1}.collection-form .primary{padding:0 16px}.collection-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.collection-card{display:flex;align-items:center;gap:11px;min-width:0;padding:14px;border:1px solid #29485b;border-radius:13px;background:linear-gradient(135deg,#101d2b,#17152b)}.collection-icon{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border-radius:11px;background:#143344;color:var(--cyan);font-size:22px}.collection-meta{min-width:0}.collection-meta strong{display:block;overflow-wrap:anywhere}.collection-meta span{display:block;color:var(--muted);font-size:11px;margin-top:3px}@media(max-width:420px){.collection-list{grid-template-columns:1fr}.collection-form .primary{padding:0 12px}}
 .bottomnav{position:fixed;z-index:12;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:#090b17f5;backdrop-filter:blur(20px);border-top:1px solid #25364c}
 .navbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:transparent;color:#8589a5;font-size:10px;padding:4px 0}.navbtn .navicon{font-size:21px;line-height:1.1}.navbtn.active{color:var(--cyan);text-shadow:0 0 12px #55edff80}.navbtn:last-child .navicon{color:var(--pink)}
 .player{bottom:61px;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px 12px;background:#111321f5;border-top:1px solid #31505e}.player .controls{grid-column:2;grid-row:1}.player .controlbuttons{gap:9px}.player .bigplay{width:35px;height:35px;background:var(--cyan)}.player .smallbtn{font-size:15px}.player .timeline{display:none}.player .volume{display:none}.player .now .cover{width:40px;height:40px;flex-basis:40px}.player .nowmeta strong{font-size:12px}.player .nowmeta span{font-size:10px}
@@ -60,8 +60,15 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     <div class="chips"><button class="chip" id="showFavorites">♥ FAVORIT</button><button class="chip" id="showPopular">♫ LAGU POPULER</button></div>
   </section>
   <section class="create-panel" id="createPanel">
-    <div class="eyebrow">CREATIVE INTERFACE</div><h1 style="font-size:29px;margin:7px 0 15px">Interface console</h1>
-    <div class="console"><div class="radar"><span class="radar-icon">◎</span></div><div class="console-tabs"><span>INSTRUMENTS</span><span>EFFECTS</span><span>ARRANGEMENT</span></div><div class="eyebrow">PROJECT CORE · AUDIO VISUALIZER</div><div class="wave" id="wave"></div><p class="library-note">Console visual untuk identitas UNIVERSE MUSIC. Fitur produksi dan render audio belum aktif.</p><button class="primary" style="width:100%;padding:13px" id="consoleButton">RENDER INTERFACE</button></div>
+    <div class="eyebrow">PERSONAL COLLECTIONS</div>
+    <h1 style="font-size:29px;margin:7px 0 6px">Buat koleksi</h1>
+    <p class="library-note">Buat folder sendiri untuk mengelompokkan lagu favoritmu.</p>
+    <form id="collectionForm" class="collection-form">
+      <input id="collectionName" class="keyinput" maxlength="40" autocomplete="off" placeholder="Nama folder baru…" aria-label="Nama folder baru" required>
+      <button class="primary" type="submit">＋ BUAT</button>
+    </form>
+    <div class="sectionhead"><h2>Koleksi gue</h2><span class="subtle" id="collectionCount">0 folder</span></div>
+    <div id="collectionList" class="collection-list"><div class="empty">Belum ada folder. Buat koleksi pertamamu di atas.</div></div>
   </section>
   <div class="sectionhead" id="catalogHeading"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
   <div class="tracks" id="tracks"><div class="empty">Menyiapkan katalog musik…</div></div>
@@ -91,6 +98,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   let tracks = [];
   let currentIndex = -1;
   let favorites = new Set(JSON.parse(localStorage.getItem('universe_music_favorites') || '[]'));
+  let collections = JSON.parse(localStorage.getItem('universe_music_collections') || '[]');
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const coverFallback = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80"%3E%3Crect width="80" height="80" rx="12" fill="%2324234b"/%3E%3Ctext x="50%25" y="58%25" text-anchor="middle" font-size="36" fill="%2355edff"%3E%E2%99%AB%3C/text%3E%3C/svg%3E';
   const fmt = s => { if (!Number.isFinite(s)) return '0:00'; s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
@@ -121,9 +129,29 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
-  $('consoleButton').addEventListener('click', () => setStatus('Interface console siap. Fitur render audio akan dibuat pada tahap berikutnya.'));
-  const waveHeights = [18,27,38,24,44,53,30,19,41,58,35,22,49,32,62,38,25,46,31,18,37,55,29,42,21,34,48,26,39,16];
-  $('wave').innerHTML = waveHeights.map(h => '<i style="height:'+h+'px"></i>').join('');
+  function renderCollections() {
+    $('collectionCount').textContent = collections.length + (collections.length === 1 ? ' folder' : ' folder');
+    if (!collections.length) {
+      $('collectionList').innerHTML = '<div class="empty">Belum ada folder. Buat koleksi pertamamu di atas.</div>';
+      return;
+    }
+    $('collectionList').innerHTML = collections.map(item => '<article class="collection-card"><div class="collection-icon">▣</div><div class="collection-meta"><strong>'+escapeHTML(item.name)+'</strong><span>'+(Array.isArray(item.tracks) ? item.tracks.length : 0)+' lagu</span></div></article>').join('');
+  }
+  $('collectionForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('collectionName').value.trim();
+    if (!name) return;
+    if (collections.some(item => item.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+      setStatus('Nama folder itu sudah ada. Coba nama lain.', true);
+      return;
+    }
+    collections.push({id: 'collection-' + Date.now(), name, tracks: []});
+    localStorage.setItem('universe_music_collections', JSON.stringify(collections));
+    $('collectionName').value = '';
+    renderCollections();
+    setStatus('Folder "' + name + '" berhasil dibuat dan disimpan di perangkat ini.');
+  });
+  renderCollections();
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
   function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
   async function api(path) {
