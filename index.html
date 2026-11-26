@@ -137,9 +137,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   document.querySelectorAll('[data-favorites]').forEach(btn => btn.addEventListener('click', () => setPage('library')));
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
-  $('consoleButton').addEventListener('click', () => setStatus('Interface console siap. Fitur render audio akan dibuat pada tahap berikutnya.'));
-  const waveHeights = [18,27,38,24,44,53,30,19,41,58,35,22,49,32,62,38,25,46,31,18,37,55,29,42,21,34,48,26,39,16];
-  $('wave').innerHTML = waveHeights.map(h => '<i style="height:'+h+'px"></i>').join('');
+  // Legacy audio-console handlers removed: Create is now the custom-folder manager.
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
   function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
   async function api(path) {
