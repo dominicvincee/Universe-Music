@@ -159,7 +159,9 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
       const liked = favorites.has(id);
       const card = document.createElement('article');
       card.className = 'track';
-      card.innerHTML = '<img class="cover" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\\''+coverFallback+'\\'"><div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="play" aria-label="Putar" title="Putar">▶</button><button class="play add-folder" aria-label="Tambahkan ke folder" title="Tambahkan ke folder">＋</button></div>';
+      card.innerHTML = '<div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="play" aria-label="Putar" title="Putar">▶</button><button class="play add-folder" aria-label="Tambahkan ke folder" title="Tambahkan ke folder">＋</button></div>';
+      const coverImg = document.createElement('img'); coverImg.className = 'cover'; coverImg.alt = ''; coverImg.loading = 'lazy'; coverImg.src = image; coverImg.onerror = () => { coverImg.src = coverFallback; };
+      card.insertBefore(coverImg, card.firstChild);
       card.querySelector('.play:not(.add-folder)').addEventListener('click', () => playTrack(index));
       card.querySelector('.heart').addEventListener('click', () => toggleFavorite(id));
       card.querySelector('.add-folder').addEventListener('click', () => openFolderPicker(track));
