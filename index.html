@@ -16,8 +16,8 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
 .app{max-width:820px;padding-top:15px}.top{margin-bottom:16px}.brand{letter-spacing:1px}.logo{border-radius:50%;box-shadow:0 0 22px #55edff55}
 .eyebrow{letter-spacing:2px}.hero{padding:0;border:0;border-radius:0;background:transparent;overflow:visible}.hero:after{display:none}.hero h1{font-size:clamp(27px,6vw,42px);letter-spacing:-.8px;margin:8px 0}.hero p{margin-bottom:0}
 .featured{display:flex;position:relative;min-height:180px;overflow:hidden;border:1px solid #55edffb5;border-radius:16px;margin:14px 0 22px;background:linear-gradient(100deg,#06111eeF 0%,#071525d9 48%,#4b1748a8 100%);box-shadow:0 0 22px #55edff20}
-.featured-art{width:43%;min-height:180px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#55edff88,transparent 32%),linear-gradient(140deg,#173b58,#32143e 70%,#0a0b19);font-size:76px;position:relative}
-.featured-art:after{content:"";position:absolute;inset:12px;border:1px solid #55edff70;border-radius:10px}
+.featured-art{width:43%;min-height:180px;object-fit:cover;background:radial-gradient(circle at 50% 45%,#55edff88,transparent 32%),linear-gradient(140deg,#173b58,#32143e 70%,#0a0b19);position:relative}
+.featured-copy h2{overflow-wrap:anywhere}.featured-copy p{overflow-wrap:anywhere}
 .featured-copy{padding:19px 14px;align-self:center;flex:1;min-width:0}.featured-copy h2{font-size:clamp(19px,4vw,27px);line-height:1.08;margin:9px 0}.featured-copy p{font-size:11px;color:#c4d6e8;margin:0 0 13px}.featured-copy .primary{padding:10px 14px;border-radius:9px;font-size:12px}
 .sectionhead{margin:21px 0 11px}.sectionhead h2{font-size:17px;text-transform:uppercase;letter-spacing:.7px}.subtle{color:var(--cyan)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;border:1px solid #35556b;border-radius:8px;background:linear-gradient(120deg,#142a3b,#17172d);padding:9px 12px;font-size:11px;font-weight:800;letter-spacing:.4px;color:#d8f8ff}.chip:active,.chip:hover{border-color:var(--cyan);box-shadow:0 0 12px #55edff30}
@@ -39,8 +39,8 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <section class="hero" id="homeHero">
     <div class="eyebrow">WELCOME TO YOUR SOUND UNIVERSE</div>
     <div class="featured">
-      <div class="featured-art" aria-hidden="true">♫</div>
-      <div class="featured-copy"><div class="eyebrow">NEO-SOUND SYSTEM</div><h2>NEO·SOUND<br>OF THE NIGHT</h2><p>Jelajahi suara baru dari semesta musikmu.</p><button class="primary" id="featuredPlay">▶ DENGARKAN</button></div>
+      <img class="featured-art" id="featuredCover" alt="" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect width=%2280%22 height=%2280%22 rx=%2212%22 fill=%22%2324234b%22/%3E%3Ctext x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-size=%2236%22 fill=%22%2355edff%22%3E%E2%99%AB%3C/text%3E%3C/svg%3E">
+      <div class="featured-copy"><div class="eyebrow">NOW PLAYING</div><h2 id="featuredTitle">Pilih lagu untuk mulai</h2><p id="featuredArtist">UNIVERSE MUSIC</p><button class="primary" id="featuredPlay">▶ PUTAR LAGU</button></div>
     </div>
     <div class="sectionhead"><h2>Sector maps</h2><span class="subtle">GENRES</span></div>
     <div class="chips">
@@ -118,7 +118,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   }
   document.querySelectorAll('.navbtn').forEach(btn => btn.addEventListener('click', () => setPage(btn.dataset.page)));
   document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; searchTracks(btn.dataset.query); }));
-  $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
+  $('featuredPlay').addEventListener('click', () => { setPage('home'); if (currentIndex >= 0) { if (audio.paused) audio.play().catch(() => setStatus('Tidak bisa melanjutkan pemutaran.', true)); else audio.pause(); } else if (tracks.length) playTrack(0); else loadPopular(); });
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
   $('consoleButton').addEventListener('click', () => setStatus('Interface console siap. Fitur render audio akan dibuat pada tahap berikutnya.'));
@@ -196,6 +196,11 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     const cover = track.artwork?.['480x480'] || track.artwork?.['150x150'] || coverFallback;
     $('nowCover').src = cover;
     $('nowCover').onerror = () => { $('nowCover').src = coverFallback; };
+    $('featuredCover').src = cover;
+    $('featuredCover').onerror = () => { $('featuredCover').src = coverFallback; };
+    $('featuredTitle').textContent = track.title || 'Untitled track';
+    $('featuredArtist').textContent = track.user?.name || 'Unknown artist';
+    $('featuredPlay').textContent = '▶ PUTAR LAGU';
     $('playBtn').textContent = '…';
     setStatus('Menghubungkan streaming…');
     try {
@@ -229,8 +234,8 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   });
   $('prevBtn').addEventListener('click', () => { if (currentIndex > 0) playTrack(currentIndex - 1); });
   $('nextBtn').addEventListener('click', () => { if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1); });
-  audio.addEventListener('play', () => $('playBtn').textContent = 'Ⅱ');
-  audio.addEventListener('pause', () => $('playBtn').textContent = '▶');
+  audio.addEventListener('play', () => { $('playBtn').textContent = 'Ⅱ'; $('featuredPlay').textContent = 'Ⅱ SEDANG DIPUTAR'; });
+  audio.addEventListener('pause', () => { $('playBtn').textContent = '▶'; $('featuredPlay').textContent = '▶ LANJUTKAN'; });
   audio.addEventListener('ended', () => { if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1); });
   audio.addEventListener('timeupdate', () => { if (audio.duration && Number.isFinite(audio.duration)) { $('seek').value = Math.round(audio.currentTime/audio.duration*1000); $('currentTime').textContent = fmt(audio.currentTime); $('duration').textContent = fmt(audio.duration); } });
   $('seek').addEventListener('input', () => { if (audio.duration && Number.isFinite(audio.duration)) audio.currentTime = Number($('seek').value)/1000*audio.duration; });
