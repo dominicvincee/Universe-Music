@@ -42,6 +42,9 @@ jobs:
           git clone --depth 1 https://github.com/MetrolistGroup/quackjs.git /tmp/quackjs
           cd /tmp/quackjs
           grep -RIl 'compileSdk.*37' . --include='*.kts' --include='*.toml' | xargs -r sed -i -E 's/compileSdk = "37"/compileSdk = "36"/g; s/compileSdk = 37/compileSdk = 36/g'
+          # Keep QuackJS on the same Android Gradle Plugin version as InnerTubeX.
+          grep -RIl '9\.5\.0' . --include='*.kts' --include='*.toml' | xargs -r sed -i 's/9\.5\.0/9.4.1/g'
+          grep -RIn '9\.5\.0' . --include='*.kts' --include='*.toml' || true
           grep -RIn 'compileSdk.*37' . --include='*.kts' --include='*.toml' || true
           gradle publishToMavenLocal --stacktrace
 
