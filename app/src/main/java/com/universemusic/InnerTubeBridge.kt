@@ -91,6 +91,7 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
                     try {
                         releasePlayer()
                         val next = MediaPlayer()
+                        next.setVolume(0.85f, 0.85f)
                         player = next
                         next.setOnPreparedListener { prepared ->
                             prepared.start()
