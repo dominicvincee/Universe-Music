@@ -102,6 +102,8 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   let nativeCallbackCounter = 0;
   const nativeCallbacks = Object.create(null);
   let nativeIsPlaying = false;
+  let playbackSequence = 0;
+  let endedSequence = -1;
   let tracks = [];
   let currentIndex = -1;
   let currentSource = tracks;
@@ -289,17 +291,24 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   };
   window.onInnerTubeProgress = (position, duration, playing) => {
     nativeIsPlaying = !!playing;
+    if (playing && duration > 0 && position > 0 && duration - position <= 1200 && endedSequence !== playbackSequence) {
+      advanceAfterTrackEnd();
+      return;
+    }
     $('currentTime').textContent = fmt(position / 1000);
     $('duration').textContent = fmt(duration / 1000);
     $('duration').dataset.ms = String(duration);
     $('seek').value = duration > 0 ? Math.round(position / duration * 1000) : 0;
     $('playBtn').textContent = nativeIsPlaying ? 'Ⅱ' : '▶';
   };
-  window.onInnerTubeEnded = () => {
+  function advanceAfterTrackEnd() {
+    if (endedSequence === playbackSequence) return;
+    endedSequence = playbackSequence;
     nativeIsPlaying = false;
     $('playBtn').textContent = '▶';
     playNextTrack();
-  };
+  }
+  window.onInnerTubeEnded = advanceAfterTrackEnd;
   function render(items) {
     $('tracks').innerHTML = '';
     $('resultCount').textContent = items.length+' lagu';
@@ -383,6 +392,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     currentIndex = index;
     currentSource = source;
     currentTrack = track;
+    playbackSequence += 1;
     $('nowTitle').textContent = track.title || 'YouTube Music';
     $('nowArtist').textContent = 'Menghubungkan InnerTubeX…';
     $('nowCover').src = track.artwork?.['480x480'] || track.artwork?.['150x150'] || coverFallback;
@@ -417,11 +427,18 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   });
   $('prevBtn').addEventListener('click', () => { if (currentIndex > 0) playTrack(currentIndex - 1, currentSource); });
   function playNextTrack() {
-    if (currentSource === queueTracks) { if (currentIndex < queueTracks.length - 1) playTrack(currentIndex + 1, queueTracks); return; }
+    if (currentSource === queueTracks) {
+      if (currentIndex < queueTracks.length - 1) {
+        playTrack(currentIndex + 1, queueTracks);
+        return;
+      }
+      const matchingIndex = currentTrack ? tracks.findIndex(track => String(track.id) === String(currentTrack.id)) : -1;
+      if (tracks.length) playTrack(matchingIndex >= 0 && matchingIndex < tracks.length - 1 ? matchingIndex + 1 : 0, tracks);
+      return;
+    }
     if (queueTracks.length) {
-      const queuedIndex = currentTrack ? queueTracks.findIndex(track => String(track.id) === String(currentTrack.id)) : -1;
-      if (queuedIndex >= 0) { if (queuedIndex < queueTracks.length - 1) playTrack(queuedIndex + 1, queueTracks); return; }
-      playTrack(0, queueTracks); return;
+      playTrack(0, queueTracks);
+      return;
     }
     if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1, tracks);
   }
