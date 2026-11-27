@@ -321,7 +321,9 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
       const liked = favorites.has(id);
       const card = document.createElement('article');
       card.className = 'track';
-      card.innerHTML = '<img class="cover" role="button" tabindex="0" aria-label="Putar '+title+'" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\\''+coverFallback+'\\'"><div class="trackinfo"><div class="tracktitle" role="button" tabindex="0" title="'+title+'" aria-label="Putar '+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="morebtn" aria-label="Opsi lagu" title="Opsi lagu">⋮</button></div>';
+      card.innerHTML = '<img class="cover" role="button" tabindex="0" aria-label="Putar '+title+'" alt="" loading="lazy" src="'+escapeHTML(image)+'"><div class="trackinfo"><div class="tracktitle" role="button" tabindex="0" title="'+title+'" aria-label="Putar '+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="morebtn" aria-label="Opsi lagu" title="Opsi lagu">⋮</button></div>';
+      const coverElement = card.querySelector('.cover');
+      coverElement.addEventListener('error', () => { coverElement.src = coverFallback; }, { once: true });
       const playThisTrack = () => playTrack(index, items);
       card.querySelector('.cover').addEventListener('click', playThisTrack);
       card.querySelector('.tracktitle').addEventListener('click', playThisTrack);
