@@ -26,4 +26,4 @@ The static GitHub Pages UI does not have access to the Android native bridge. Se
 
 See [LICENSE.md](LICENSE.md) and [ASSET_REGISTER.md](ASSET_REGISTER.md) before distributing or monetizing the project.
 
-Android build validation note: the app compile SDK is aligned with the workflow's installed Android SDK platform (API 36). The native YouTube Music + InnerTubeX bridge still requires an Android build and device playback test before it can be considered verified.
+Android build validation note: the app compile SDK is aligned with the workflow's installed Android SDK platform (API 36). The native MediaPlayer data source call was corrected for Android's Context/Uri/header API. The native YouTube Music + InnerTubeX bridge still requires an Android build and device playback test before it can be considered verified.
