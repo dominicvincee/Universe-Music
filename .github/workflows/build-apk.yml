@@ -1,7 +1,9 @@
 name: Build UNIVERSE MUSIC APK
 
 on:
-  # APK builds remain manual-only after the one-time validation build.
+  push:
+    paths:
+      - 'README.md'
   workflow_dispatch:
 
 permissions:
