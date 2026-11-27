@@ -92,14 +92,12 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <button class="navbtn" data-page="create"><span class="navicon">＋</span><span>Create</span></button>
   <button class="navbtn" data-page="settings"><span class="navicon">◈</span><span>Settings</span></button>
 </nav>
-<audio id="audio" preload="metadata"></audio>
 <div class="dialog" id="queueDialog" role="dialog" aria-modal="true" aria-labelledby="queueTitle"><div class="dialogbox"><h2 id="queueTitle">Antrean lagu</h2><p>Lagu yang ditambahkan akan diputar melalui YouTube Music + InnerTubeX.</p><div id="queueList" class="tracks"><div class="empty">Antrean masih kosong.</div></div><div class="dialogactions"><button class="secondary" id="clearQueue">Kosongkan antrean</button><button class="secondary" id="closeQueue">Tutup</button></div></div></div>
 <div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">UNIVERSE MUSIC · Sumber Musik</h2><p>Pencarian dan pemutaran Android menggunakan YouTube Music melalui InnerTubeX. Tidak perlu memasukkan API key.</p><p class="hint">InnerTubeX memakai antarmuka YouTube yang tidak resmi dan dapat berubah sewaktu-waktu. Bridge native tersedia di APK Android.</p><div class="dialogactions"><button class="primary" id="cancelSettings">Tutup</button></div></div></div>
  <div class="dialog" id="collectionDialog" role="dialog" aria-modal="true" aria-labelledby="collectionDialogTitle"><div class="dialogbox"><h2 id="collectionDialogTitle">Tambah ke folder</h2><p>Pilih koleksi tempat lagu ini disimpan.</p><div id="collectionChoices"></div><div class="dialogactions"><button class="secondary" id="cancelCollection">Batal</button></div></div></div>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const audio = $('audio');
   let nativeCallbackCounter = 0;
   const nativeCallbacks = Object.create(null);
   let nativeIsPlaying = false;
@@ -408,7 +406,6 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('nextBtn').addEventListener('click', playNextTrack);
   $('seek').addEventListener('input', () => { if (window.UniverseNative && currentTrack) { const duration = Number($('duration').dataset.ms || 0); window.UniverseNative.seekMusic(Math.round(Number($('seek').value)/1000*duration)); } });
   $('volume').addEventListener('input', () => { if (window.UniverseNative && typeof window.UniverseNative.setVolume === 'function') window.UniverseNative.setVolume(Number($('volume').value)); });
-  audio.volume = .85;
   loadPopular();
 })();
 </script>
