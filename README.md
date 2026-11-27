@@ -30,3 +30,6 @@ Android build validation note: the app compile SDK is aligned with the workflow'
 
 
 Build validation: API 37 compile SDK configuration.
+
+
+Build validation: OkHttp Android 5.4.0 compatibility with SDK 36.
