@@ -171,7 +171,7 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
                 is JSONObject -> {
                     value.optString("simpleText").takeIf { it.isNotBlank() && it != "null" }?.let { return it }
                     value.optJSONArray("runs")?.let { runs ->
-                        val joined = (0 until runs.length()).mapNotNull { runs.optJSONObject(it)?.optString("text")?.takeIf(String::isNotBlank) }.joinToString("")
+                        val joined = (0 until runs.length()).mapNotNull { runs.optJSONObject(it)?.optString("text")?.let { text -> text.takeIf { it.isNotBlank() } } }.joinToString("")
                         if (joined.isNotBlank()) return joined
                     }
                     val keys = value.keys()
