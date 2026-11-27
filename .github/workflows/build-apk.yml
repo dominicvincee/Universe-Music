@@ -53,6 +53,9 @@ jobs:
           git clone --depth 1 https://github.com/MetrolistGroup/innertubex.git /tmp/innertubex
           cd /tmp/innertubex
           sed -i 's/compileSdk = "37"/compileSdk = "36"/' gradle/libs.versions.toml
+          # Match the AGP version recorded in the locally published QuackJS artifact.
+          grep -RIl '9\.4\.1' . --include='*.kts' --include='*.toml' | xargs -r sed -i 's/9\.4\.1/9.5.0/g'
+          grep -RIn '9\.4\.1' . --include='*.kts' --include='*.toml' || true
           gradle -PuseLocalQuackJS publishToMavenLocal --stacktrace
 
       - name: Show build environment
