@@ -1,3 +1,4 @@
+// Build trigger: package the latest web player and automatic next-track changes into the APK.
 package com.universemusic
 
 import android.app.Activity
