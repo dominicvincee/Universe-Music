@@ -93,19 +93,16 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <button class="navbtn" data-page="settings"><span class="navicon">◈</span><span>Settings</span></button>
 </nav>
 <audio id="audio" preload="metadata"></audio>
-<div class="dialog" id="youtubeDialog" role="dialog" aria-modal="true" aria-labelledby="youtubeTitle"><div class="dialogbox" style="max-width:600px"><h2 id="youtubeTitle">YouTube Player</h2><p id="youtubeTrackTitle">Pemutar resmi YouTube</p><div id="youtubePlayerHost" style="width:100%;min-height:240px;aspect-ratio:16/9;background:#05050c;border-radius:12px;overflow:hidden"></div><div class="dialogactions"><button class="secondary" id="openOnYouTube">Buka di YouTube ↗</button><button class="primary" id="closeYouTube">Tutup</button></div></div></div>
 <div class="dialog" id="queueDialog" role="dialog" aria-modal="true" aria-labelledby="queueTitle"><div class="dialogbox"><h2 id="queueTitle">Antrean lagu</h2><p>Lagu yang ditambahkan akan diputar lewat pemutar Audius yang sama.</p><div id="queueList" class="tracks"><div class="empty">Antrean masih kosong.</div></div><div class="dialogactions"><button class="secondary" id="clearQueue">Kosongkan antrean</button><button class="secondary" id="closeQueue">Tutup</button></div></div></div>
+<div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">UNIVERSE MUSIC · Sumber Musik</h2><p>Pencarian dan pemutaran Android menggunakan YouTube Music melalui InnerTubeX. Tidak diperlukan Audius API key atau YouTube Data API key.</p><p class="hint">InnerTubeX memakai antarmuka YouTube yang tidak resmi dan dapat berubah sewaktu-waktu. Bridge native tersedia di APK Android.</p><div class="dialogactions"><button class="primary" id="cancelSettings">Tutup</button></div></div></div>
  <div class="dialog" id="collectionDialog" role="dialog" aria-modal="true" aria-labelledby="collectionDialogTitle"><div class="dialogbox"><h2 id="collectionDialogTitle">Tambah ke folder</h2><p>Pilih koleksi tempat lagu ini disimpan.</p><div id="collectionChoices"></div><div class="dialogactions"><button class="secondary" id="cancelCollection">Batal</button></div></div></div>
-<div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">Koneksi katalog</h2><p>Masukkan <b>Audius API key</b> dari akun developer lu. Ini bukan login pengguna. Key disimpan hanya di browser perangkat ini; jangan masukkan API secret atau password.</p><label for="apiKey">Audius API key</label><input class="keyinput" id="apiKey" type="password" autocomplete="off" placeholder="Tempel API key di sini"><p class="hint">Buat key melalui <a href="https://api.audius.co/plans" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Audius API Plans</a>. Gunakan API key publik saja, jangan API secret.</p><label for="youtubeApiKey">YouTube Data API key (opsional)</label><input class="keyinput" id="youtubeApiKey" type="password" autocomplete="off" placeholder="Tempel YouTube API key"><p class="hint">Untuk pencarian YouTube resmi, aktifkan YouTube Data API v3 di Google Cloud. Pemutar resmi dapat menampilkan iklan. <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Google Cloud Console</a></p><div class="dialogactions"><button class="secondary" id="cancelSettings">Batal</button><button class="primary" id="saveKey">Simpan key</button></div></div></div>
 <script>
 (() => {
-  const API = 'https://api.audius.co/v1';
   const $ = id => document.getElementById(id);
   const audio = $('audio');
-  let apiKey = localStorage.getItem('universe_music_audius_key') || '';
-  let youtubeApiKey = localStorage.getItem('universe_music_youtube_key') || '';
-  let searchSource = 'youtube';
-  let activeYouTubeVideo = null;
+  let nativeCallbackCounter = 0;
+  const nativeCallbacks = Object.create(null);
+  let nativeIsPlaying = false;
   let tracks = [];
   let currentIndex = -1;
   let currentSource = tracks;
