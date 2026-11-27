@@ -37,13 +37,20 @@ jobs:
         with:
           gradle-version: '9.6.0'
 
+      - name: Build QuackJS locally with SDK 36
+        run: |
+          git clone --depth 1 https://github.com/MetrolistGroup/quackjs.git /tmp/quackjs
+          cd /tmp/quackjs
+          grep -RIl 'compileSdk.*37' . --include='*.kts' --include='*.toml' | xargs -r sed -i -E 's/compileSdk = "37"/compileSdk = "36"/g; s/compileSdk = 37/compileSdk = 36/g'
+          grep -RIn 'compileSdk.*37' . --include='*.kts' --include='*.toml' || true
+          gradle publishToMavenLocal --stacktrace
+
       - name: Build compatible InnerTubeX from source
         run: |
           git clone --depth 1 https://github.com/MetrolistGroup/innertubex.git /tmp/innertubex
           cd /tmp/innertubex
           sed -i 's/compileSdk = "37"/compileSdk = "36"/' gradle/libs.versions.toml
-          grep 'compileSdk =' gradle/libs.versions.toml
-          gradle publishToMavenLocal --stacktrace
+          gradle -PuseLocalQuackJS publishToMavenLocal --stacktrace
 
       - name: Show build environment
         run: |
