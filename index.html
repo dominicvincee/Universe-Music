@@ -94,7 +94,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
 </nav>
 <audio id="audio" preload="metadata"></audio>
 <div class="dialog" id="queueDialog" role="dialog" aria-modal="true" aria-labelledby="queueTitle"><div class="dialogbox"><h2 id="queueTitle">Antrean lagu</h2><p>Lagu yang ditambahkan akan diputar lewat pemutar Audius yang sama.</p><div id="queueList" class="tracks"><div class="empty">Antrean masih kosong.</div></div><div class="dialogactions"><button class="secondary" id="clearQueue">Kosongkan antrean</button><button class="secondary" id="closeQueue">Tutup</button></div></div></div>
-<div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">UNIVERSE MUSIC · Sumber Musik</h2><p>Pencarian dan pemutaran Android menggunakan YouTube Music melalui InnerTubeX. Tidak diperlukan Audius API key atau YouTube Data API key.</p><p class="hint">InnerTubeX memakai antarmuka YouTube yang tidak resmi dan dapat berubah sewaktu-waktu. Bridge native tersedia di APK Android.</p><div class="dialogactions"><button class="primary" id="cancelSettings">Tutup</button></div></div></div>
+<div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">UNIVERSE MUSIC · Sumber Musik</h2><p>Pencarian dan pemutaran Android menggunakan YouTube Music melalui InnerTubeX. Tidak perlu memasukkan API key.</p><p class="hint">InnerTubeX memakai antarmuka YouTube yang tidak resmi dan dapat berubah sewaktu-waktu. Bridge native tersedia di APK Android.</p><div class="dialogactions"><button class="primary" id="cancelSettings">Tutup</button></div></div></div>
  <div class="dialog" id="collectionDialog" role="dialog" aria-modal="true" aria-labelledby="collectionDialogTitle"><div class="dialogbox"><h2 id="collectionDialogTitle">Tambah ke folder</h2><p>Pilih koleksi tempat lagu ini disimpan.</p><div id="collectionChoices"></div><div class="dialogactions"><button class="secondary" id="cancelCollection">Batal</button></div></div></div>
 <script>
 (() => {
@@ -357,52 +357,43 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('closeQueue').addEventListener('click', () => $('queueDialog').classList.remove('open'));
   $('queueDialog').addEventListener('click', e => { if(e.target === $('queueDialog')) $('queueDialog').classList.remove('open'); });
   $('clearQueue').addEventListener('click', () => { queueTracks.splice(0, queueTracks.length); saveQueue(); renderQueue(); });
-  async function playTrack(index, source=tracks) {
+  function playTrack(index, source=tracks) {
     const track = source[index];
     if (!track) return;
     currentIndex = index;
     currentSource = source;
     currentTrack = track;
-    $('nowTitle').textContent = track.title || 'Untitled track';
-    $('nowArtist').textContent = track.user?.name || 'Unknown artist';
-    const cover = track.artwork?.['480x480'] || track.artwork?.['150x150'] || coverFallback;
-    $('nowCover').src = cover;
-    $('nowCover').onerror = () => { $('nowCover').src = coverFallback; };
+    $('nowTitle').textContent = track.title || 'YouTube Music';
+    $('nowArtist').textContent = 'Menghubungkan InnerTubeX…';
+    $('nowCover').src = track.artwork?.['480x480'] || track.artwork?.['150x150'] || coverFallback;
     $('playBtn').textContent = '…';
-    setStatus('Menghubungkan streaming…');
-    try {
-      const url = API + '/tracks/' + encodeURIComponent(track.id) + '/stream';
-      audio.pause();
-      audio.src = url;
-      audio.load();
-      await audio.play();
-      $('playBtn').textContent = 'Ⅱ';
-      setStatus('Memutar melalui Audius.');
-    } catch (error) {
-      $('playBtn').textContent = '▶';
-      setStatus('Streaming gagal dimulai. Cek API key, koneksi, atau ketersediaan lagu. '+error.message, true);
-    }
+    setStatus('Mengambil stream audio YouTube Music melalui InnerTubeX…');
+    callNative('playMusic', [String(track.id), String(track.title || 'YouTube Music')], response => {
+      if (!response.ok) {
+        nativeIsPlaying = false;
+        $('playBtn').textContent = '▶';
+        setStatus(response.error || 'Gagal memutar lagu.', true);
+      }
+    });
   }
-  $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); searchYouTube($('searchInput').value); });
-  $('settingsBtn').addEventListener('click', () => { $('apiKey').value = apiKey; $('youtubeApiKey').value = youtubeApiKey; $('settingsDialog').classList.add('open'); });
+  $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); searchTracks($('searchInput').value); });
+  $('settingsBtn').addEventListener('click', () => $('settingsDialog').classList.add('open'));
   $('cancelSettings').addEventListener('click', () => $('settingsDialog').classList.remove('open'));
   $('cancelCollection').addEventListener('click', () => { $('collectionDialog').classList.remove('open'); pendingCollectionTrack = null; });
   $('collectionDialog').addEventListener('click', e => { if (e.target === $('collectionDialog')) { $('collectionDialog').classList.remove('open'); pendingCollectionTrack = null; } });
   $('settingsDialog').addEventListener('click', e => { if (e.target === $('settingsDialog')) $('settingsDialog').classList.remove('open'); });
-  $('saveKey').addEventListener('click', () => {
-    apiKey = $('apiKey').value.trim();
-    if (apiKey) localStorage.setItem('universe_music_audius_key', apiKey);
-    else localStorage.removeItem('universe_music_audius_key');
-    youtubeApiKey = $('youtubeApiKey').value.trim();
-    if (youtubeApiKey) localStorage.setItem('universe_music_youtube_key', youtubeApiKey);
-    else localStorage.removeItem('universe_music_youtube_key');
-    $('settingsDialog').classList.remove('open');
-    if (searchSource === 'youtube' && $('searchInput').value.trim()) searchYouTube($('searchInput').value); else loadPopular();
-  });
-  $('playBtn').addEventListener('click', async () => {
-    if (!audio.src) { if (currentIndex >= 0) return playTrack(currentIndex); setStatus('Pilih lagu dari katalog terlebih dahulu.'); return; }
-    if (audio.paused) { try { await audio.play(); } catch(e) { setStatus('Tidak bisa melanjutkan pemutaran.', true); } }
-    else audio.pause();
+  $('playBtn').addEventListener('click', () => {
+    if (!currentTrack) { setStatus('Pilih lagu dari hasil YouTube Music terlebih dahulu.'); return; }
+    if (!window.UniverseNative) { setStatus('Pemutar InnerTubeX tersedia di APK Android.', true); return; }
+    if (nativeIsPlaying) {
+      window.UniverseNative.pauseMusic();
+      nativeIsPlaying = false;
+      $('playBtn').textContent = '▶';
+    } else {
+      window.UniverseNative.resumeMusic();
+      nativeIsPlaying = true;
+      $('playBtn').textContent = 'Ⅱ';
+    }
   });
   $('prevBtn').addEventListener('click', () => { if (currentIndex > 0) playTrack(currentIndex - 1, currentSource); });
   function playNextTrack() {
@@ -415,14 +406,9 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     if (currentIndex < tracks.length - 1) playTrack(currentIndex + 1, tracks);
   }
   $('nextBtn').addEventListener('click', playNextTrack);
-  audio.addEventListener('play', () => $('playBtn').textContent = 'Ⅱ');
-  audio.addEventListener('pause', () => $('playBtn').textContent = '▶');
-  audio.addEventListener('ended', playNextTrack);
-  audio.addEventListener('timeupdate', () => { if (audio.duration && Number.isFinite(audio.duration)) { $('seek').value = Math.round(audio.currentTime/audio.duration*1000); $('currentTime').textContent = fmt(audio.currentTime); $('duration').textContent = fmt(audio.duration); } });
-  $('seek').addEventListener('input', () => { if (audio.duration && Number.isFinite(audio.duration)) audio.currentTime = Number($('seek').value)/1000*audio.duration; });
-  $('volume').addEventListener('input', () => audio.volume = Number($('volume').value));
+  $('seek').addEventListener('input', () => { if (window.UniverseNative && currentTrack) { const duration = Number($('duration').dataset.ms || 0); window.UniverseNative.seekMusic(Math.round(Number($('seek').value)/1000*duration)); } });
+  $('volume').addEventListener('input', () => { if (window.UniverseNative && typeof window.UniverseNative.setVolume === 'function') window.UniverseNative.setVolume(Number($('volume').value)); });
   audio.volume = .85;
-  if (!apiKey) setStatus('Siapkan Audius API key lewat tombol ⚙ untuk mengaktifkan katalog.');
   loadPopular();
 })();
 </script>
