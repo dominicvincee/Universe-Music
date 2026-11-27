@@ -1,7 +1,11 @@
 name: Build UNIVERSE MUSIC APK
 
 on:
-  # APK builds remain manual-only after the one-time validation build.
+  # Build automatically when the native InnerTubeX JSON fix changes.
+  push:
+    paths:
+      - "app/build.gradle.kts"
+      - "app/src/main/java/com/universemusic/InnerTubeBridge.kt"
   workflow_dispatch:
 
 permissions:
