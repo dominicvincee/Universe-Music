@@ -20,6 +20,8 @@ import com.metrolist.innertubex.extraction.YtConfigParserImpl
 import com.metrolist.innertubex.models.YouTubeClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +31,13 @@ import kotlinx.coroutines.launch
 
 class InnerTubeBridge(private val activity: Activity, private val webView: WebView) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val clientDelegate = lazy { HttpClient(OkHttp) }
+    private val clientDelegate = lazy {
+        HttpClient(OkHttp) {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+    }
     private val httpClient by clientDelegate
     private val innerTubeDelegate = lazy { InnerTube(httpClient) }
     private val innerTube by innerTubeDelegate
