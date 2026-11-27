@@ -30,7 +30,8 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val clientDelegate = lazy { HttpClient(OkHttp) }
     private val httpClient by clientDelegate
-    private val innerTube by lazy { InnerTube(httpClient) }
+    private val innerTubeDelegate = lazy { InnerTube(httpClient) }
+    private val innerTube by innerTubeDelegate
     private val extractor by lazy {
         val store = RemotePlayerConfigStore(httpClient = httpClient, repository = PlayerConfigRepository.disabled())
         val cipher = YouTubeCipherService(httpClient, store)
@@ -145,6 +146,8 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
         handler.removeCallbacks(progressTask)
         releasePlayer()
         scope.cancel()
+        // Close InnerTube's own request/session resources before closing the caller-owned client.
+        if (innerTubeDelegate.isInitialized()) innerTube.close()
         if (clientDelegate.isInitialized()) httpClient.close()
     }
 
