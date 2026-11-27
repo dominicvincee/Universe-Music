@@ -33,4 +33,6 @@ configurations.configureEach {
 dependencies {
     implementation("com.github.MetrolistGroup:innertubex:v0.13.2")
     implementation("io.ktor:ktor-client-okhttp:3.6.0")
+    implementation("io.ktor:ktor-client-content-negotiation:3.6.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.6.0")
 }
