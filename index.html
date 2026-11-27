@@ -233,74 +233,75 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   $('backCollections').addEventListener('click', renderCollections);
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
   function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
-  function setSearchSource(source) {
-    searchSource = source;
-    $('sourceAudius').classList.toggle('active', source === 'audius');
-    $('sourceYouTube').classList.toggle('active', source === 'youtube');
-    $('sourceHint').textContent = source === 'youtube' ? 'YouTube: cari video musik dan putar melalui pemutar resmi YouTube. Iklan mungkin muncul.' : 'Audius: streaming audio langsung dari katalog Audius.';
-    $('resultCount').textContent = source === 'youtube' ? 'YouTube catalog' : 'Audius catalog';
-  }
-  async function searchYouTube(query) {
-    if (!youtubeApiKey) {
-      $('tracks').innerHTML = '<div class="empty">YouTube belum disiapkan. Buka ⚙, masukkan YouTube Data API key, lalu coba lagi.</div>';
-      setStatus('Pencarian YouTube memerlukan API key dari Google Cloud dan YouTube Data API v3.', true);
+  window.onInnerTubeResult = (callbackId, payloadText) => {
+    const callback = nativeCallbacks[callbackId];
+    if (!callback) return;
+    delete nativeCallbacks[callbackId];
+    try { callback(JSON.parse(payloadText)); }
+    catch (error) { callback({ok:false,error:'Respons InnerTubeX tidak dapat dibaca.'}); }
+  };
+  function callNative(method, args, callback) {
+    if (!window.UniverseNative || typeof window.UniverseNative[method] !== 'function') {
+      callback({ok:false,error:'Bridge InnerTubeX belum tersedia. APK perlu diperbarui setelah migrasi selesai.'});
       return;
     }
-    $('listHeading').textContent = 'Hasil YouTube';
-    $('tracks').innerHTML = '<div class="empty">Mencari video musik di YouTube…</div>';
-    setStatus('');
-    try {
-      const url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=20&q=' + encodeURIComponent(query.trim()) + '&key=' + encodeURIComponent(youtubeApiKey);
-      const response = await fetch(url);
-      const json = await response.json();
-      if (!response.ok) throw new Error(json.error?.message || 'YouTube API merespons ' + response.status);
-      renderYouTubeTracks(Array.isArray(json.items) ? json.items : []);
-      setStatus('Hasil pencarian YouTube siap. Putar menggunakan player resmi YouTube.');
-    } catch (error) {
-      $('tracks').innerHTML = '<div class="empty">Pencarian YouTube gagal.</div>';
-      setStatus('YouTube: ' + error.message + ' Periksa API key dan kuota.', true);
-    }
+    const id = 'uf-' + (++nativeCallbackCounter);
+    nativeCallbacks[id] = callback;
+    try { window.UniverseNative[method](...args, id); }
+    catch (error) { delete nativeCallbacks[id]; callback({ok:false,error:error.message || 'Gagal memanggil InnerTubeX.'}); }
   }
-  function renderYouTubeTracks(items) {
-    $('tracks').innerHTML = '';
-    $('resultCount').textContent = items.length + ' video';
-    if (!items.length) { $('tracks').innerHTML = '<div class="empty">Tidak ada video ditemukan.</div>'; return; }
-    items.forEach(item => {
-      const id = item.id?.videoId;
-      if (!id) return;
-      const snippet = item.snippet || {};
-      const card = document.createElement('article'); card.className = 'track';
-      const image = snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url || coverFallback;
-      card.innerHTML = '<img class="cover" alt="" loading="lazy" src="' + escapeHTML(image) + '"><div class="trackinfo"><div class="tracktitle"></div><div class="artist"></div></div><div class="trackactions"><button class="play" aria-label="Putar di YouTube" title="Putar di YouTube">▶</button></div>';
-      card.querySelector('.tracktitle').textContent = snippet.title || 'Video YouTube';
-      card.querySelector('.artist').textContent = snippet.channelTitle || 'YouTube';
-      card.querySelector('.play').addEventListener('click', () => playYouTubeVideo(id, snippet.title || 'Video YouTube'));
-      $('tracks').appendChild(card);
+  function normalizeNativeTrack(item) {
+    const image = item.artwork || coverFallback;
+    return {id:item.id,title:item.title || 'YouTube Music',artist:item.artist || 'YouTube Music',
+      user:{name:item.artist || 'YouTube Music'},artwork:{'480x480':image,'150x150':image}};
+  }
+  function searchInnerTube(query) {
+    const q = String(query || '').trim();
+    if (!q) {
+      $('tracks').innerHTML = '<div class="empty">Masukkan judul lagu atau nama artis.</div>';
+      return;
+    }
+    $('listHeading').textContent = 'Hasil YouTube Music';
+    $('tracks').innerHTML = '<div class="empty">Mencari melalui YouTube Music + InnerTubeX…</div>';
+    $('resultCount').textContent = 'Mencari…';
+    setStatus('Menghubungkan ke YouTube Music melalui InnerTubeX…');
+    callNative('searchMusic', [q], response => {
+      if (!response.ok) {
+        $('tracks').innerHTML = '<div class="empty">Pencarian YouTube Music gagal.</div>';
+        $('resultCount').textContent = 'Gagal';
+        setStatus(response.error || 'Pencarian gagal.', true);
+        return;
+      }
+      tracks = Array.isArray(response.tracks) ? response.tracks.map(normalizeNativeTrack) : [];
+      render(tracks);
+      $('listHeading').textContent = 'Hasil YouTube Music';
+      setStatus(tracks.length ? 'Hasil berasal dari YouTube Music melalui InnerTubeX.' : 'Tidak ada hasil. Coba kata kunci lain.', !tracks.length);
     });
   }
-  function playYouTubeVideo(id, title) {
-    audio.pause();
-    activeYouTubeVideo = id;
-    $('youtubeTrackTitle').textContent = title;
-    $('youtubePlayerHost').innerHTML = '<iframe title="YouTube video player" src="https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&playsinline=1&enablejsapi=1&origin=' + encodeURIComponent(location.origin) + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-    $('youtubeDialog').classList.add('open');
-    $('nowTitle').textContent = title;
-    $('nowArtist').textContent = 'YouTube';
-    $('nowCover').src = 'https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/mqdefault.jpg';
+  window.onInnerTubePlaybackStarted = (title, videoId) => {
+    nativeIsPlaying = true;
+    $('nowTitle').textContent = title || 'YouTube Music';
+    $('nowArtist').textContent = 'YouTube Music · InnerTubeX';
+    $('nowCover').src = currentTrack?.artwork?.['480x480'] || coverFallback;
+    $('playBtn').textContent = 'Ⅱ';
+    $('currentTime').textContent = '0:00';
+    $('duration').textContent = '0:00';
+    $('seek').value = 0;
+    setStatus('Memutar audio melalui YouTube Music + InnerTubeX.');
+  };
+  window.onInnerTubeProgress = (position, duration, playing) => {
+    nativeIsPlaying = !!playing;
+    $('currentTime').textContent = fmt(position / 1000);
+    $('duration').textContent = fmt(duration / 1000);
+    $('duration').dataset.ms = String(duration);
+    $('seek').value = duration > 0 ? Math.round(position / duration * 1000) : 0;
+    $('playBtn').textContent = nativeIsPlaying ? 'Ⅱ' : '▶';
+  };
+  window.onInnerTubeEnded = () => {
+    nativeIsPlaying = false;
     $('playBtn').textContent = '▶';
-    setStatus('Memutar video melalui pemutar resmi YouTube. Iklan dapat muncul.');
-  }
-  function closeYouTubePlayer() { $('youtubePlayerHost').innerHTML = ''; $('youtubeDialog').classList.remove('open'); activeYouTubeVideo = null; }
-  $('closeYouTube').addEventListener('click', closeYouTubePlayer);
-  $('youtubeDialog').addEventListener('click', e => { if (e.target === $('youtubeDialog')) closeYouTubePlayer(); });
-  $('openOnYouTube').addEventListener('click', () => { if (activeYouTubeVideo) window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(activeYouTubeVideo), '_blank', 'noopener,noreferrer'); });
-  async function api(path) {
-    const response = await fetch(API + path, {headers:headers()});
-    if (!response.ok) throw new Error('Audius API merespons '+response.status+'. Periksa API key atau coba lagi.');
-    const json = await response.json();
-    if (json && json.data !== undefined) return json.data;
-    throw new Error('Respons katalog tidak dikenali.');
-  }
+    playNextTrack();
+  };
   function render(items) {
     $('tracks').innerHTML = '';
     $('resultCount').textContent = items.length+' lagu';
