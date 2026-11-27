@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.universemusic"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.universemusic"
