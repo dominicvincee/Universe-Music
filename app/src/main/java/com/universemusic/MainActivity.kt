@@ -48,7 +48,6 @@ class MainActivity : Activity() {
         super.onSaveInstanceState(outState)
     }
 
-    @Deprecated("Deprecated in Android API")
     override fun onDestroy() {
         if (::innerTubeBridge.isInitialized) innerTubeBridge.release()
         super.onDestroy()
