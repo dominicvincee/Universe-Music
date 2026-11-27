@@ -34,7 +34,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
 <div class="app">
   <header class="top">
     <div class="brand"><div class="logo">♫</div><div>UNIVERSE MUSIC<small>YOUR SOUND. YOUR UNIVERSE.</small></div></div>
-    <button class="round" id="settingsBtn" aria-label="Pengaturan API" title="Pengaturan API">⚙</button>
+    <button class="round" id="settingsBtn" aria-label="Info sumber musik" title="Info sumber musik">⚙</button>
   </header>
   <section class="hero" id="homeHero">
     <div class="eyebrow">WELCOME TO YOUR SOUND UNIVERSE</div>
@@ -75,10 +75,10 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     <div id="collectionList" class="collection-list"><div class="empty">Belum ada folder. Buat koleksi pertamamu di atas.</div></div>
     <div id="collectionDetail" class="hidden"><div class="sectionhead"><button class="secondary" id="backCollections">← Semua koleksi</button><span class="subtle" id="detailCount">0 lagu</span></div><h2 id="detailTitle" style="font-size:20px;margin:8px 0 12px"></h2><div id="detailTracks" class="tracks"></div><p class="library-note">Untuk menambahkan lagu, buka Home atau Search lalu tekan tombol ＋ pada lagu.</p></div>
   </section>
-  <div class="sectionhead" id="catalogHeading"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">Audius catalog</span></div>
+  <div class="sectionhead" id="catalogHeading"><h2 id="listHeading">Lagu populer</h2><span class="subtle" id="resultCount">YouTube Music</span></div>
   <div class="tracks" id="tracks"><div class="empty">Menyiapkan katalog musik…</div></div>
   <div class="status" id="status" role="status" aria-live="polite"></div>
-  <div class="footer">Music catalog and streams provided by Audius. Availability and rights are determined by the source and each track's license.</div>
+  <div class="footer">YouTube Music search and audio extraction powered by InnerTubeX. Availability may change when YouTube updates its services.</div>
 </div>
 <div class="player">
   <div class="now"><img class="cover" id="nowCover" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' rx='12' fill='%2324234b'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-size='36' fill='%2355edff'%3E%E2%99%AB%3C/text%3E%3C/svg%3E"><div class="nowmeta"><strong id="nowTitle">Pilih lagu untuk mulai</strong><span id="nowArtist">UNIVERSE MUSIC</span></div></div>
@@ -93,7 +93,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <button class="navbtn" data-page="settings"><span class="navicon">◈</span><span>Settings</span></button>
 </nav>
 <audio id="audio" preload="metadata"></audio>
-<div class="dialog" id="queueDialog" role="dialog" aria-modal="true" aria-labelledby="queueTitle"><div class="dialogbox"><h2 id="queueTitle">Antrean lagu</h2><p>Lagu yang ditambahkan akan diputar lewat pemutar Audius yang sama.</p><div id="queueList" class="tracks"><div class="empty">Antrean masih kosong.</div></div><div class="dialogactions"><button class="secondary" id="clearQueue">Kosongkan antrean</button><button class="secondary" id="closeQueue">Tutup</button></div></div></div>
+<div class="dialog" id="queueDialog" role="dialog" aria-modal="true" aria-labelledby="queueTitle"><div class="dialogbox"><h2 id="queueTitle">Antrean lagu</h2><p>Lagu yang ditambahkan akan diputar melalui YouTube Music + InnerTubeX.</p><div id="queueList" class="tracks"><div class="empty">Antrean masih kosong.</div></div><div class="dialogactions"><button class="secondary" id="clearQueue">Kosongkan antrean</button><button class="secondary" id="closeQueue">Tutup</button></div></div></div>
 <div class="dialog" id="settingsDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="dialogbox"><h2 id="settingsTitle">UNIVERSE MUSIC · Sumber Musik</h2><p>Pencarian dan pemutaran Android menggunakan YouTube Music melalui InnerTubeX. Tidak perlu memasukkan API key.</p><p class="hint">InnerTubeX memakai antarmuka YouTube yang tidak resmi dan dapat berubah sewaktu-waktu. Bridge native tersedia di APK Android.</p><div class="dialogactions"><button class="primary" id="cancelSettings">Tutup</button></div></div></div>
  <div class="dialog" id="collectionDialog" role="dialog" aria-modal="true" aria-labelledby="collectionDialogTitle"><div class="dialogbox"><h2 id="collectionDialogTitle">Tambah ke folder</h2><p>Pilih koleksi tempat lagu ini disimpan.</p><div id="collectionChoices"></div><div class="dialogactions"><button class="secondary" id="cancelCollection">Batal</button></div></div></div>
 <script>
