@@ -125,7 +125,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     document.querySelectorAll('.navbtn').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
     if (page === 'home') loadPopular();
     if (page === 'library') { renderLibraryCollections(); showFavoriteTracks(); }
-    if (page === 'search') { $('listHeading').textContent = 'Database search'; $('resultCount').textContent = 'Cari katalog'; }
+    if (page === 'search') { $('listHeading').textContent = 'Cari YouTube Music'; $('resultCount').textContent = 'InnerTubeX'; }
   }
   function showFavoriteTracks() {
     const saved = tracks.filter(t => favorites.has(String(t.id)));
