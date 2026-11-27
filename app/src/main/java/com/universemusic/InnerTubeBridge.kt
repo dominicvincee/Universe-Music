@@ -133,6 +133,11 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
     }
 
     @JavascriptInterface
+    fun setVolume(volume: Float) = activity.runOnUiThread {
+        try { player?.setVolume(volume.coerceIn(0f, 1f), volume.coerceIn(0f, 1f)) } catch (_: Exception) { }
+    }
+
+    @JavascriptInterface
     fun stopMusic() = activity.runOnUiThread { releasePlayer() }
 
     fun release() {
