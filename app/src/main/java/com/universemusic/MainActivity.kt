@@ -12,6 +12,7 @@ import android.graphics.Color
 
 class MainActivity : Activity() {
     private lateinit var webView: WebView
+    private lateinit var innerTubeBridge: InnerTubeBridge
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,8 @@ class MainActivity : Activity() {
         webView.settings.domStorageEnabled = true
         webView.settings.mediaPlaybackRequiresUserGesture = true
         webView.settings.allowFileAccess = false
+        innerTubeBridge = InnerTubeBridge(this, webView)
+        webView.addJavascriptInterface(innerTubeBridge, "UniverseNative")
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val host = request.url.host ?: return true
@@ -44,6 +47,12 @@ class MainActivity : Activity() {
     override fun onSaveInstanceState(outState: Bundle) {
         webView.saveState(outState)
         super.onSaveInstanceState(outState)
+    }
+
+    @Deprecated("Deprecated in Android API")
+    override fun onDestroy() {
+        if (::innerTubeBridge.isInitialized) innerTubeBridge.release()
+        super.onDestroy()
     }
 
     @Deprecated("Deprecated in Android API")
