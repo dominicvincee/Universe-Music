@@ -51,7 +51,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   <section class="search-panel" id="searchPanel">
     <div class="eyebrow">SEARCH DATABASE</div><h1 style="font-size:29px;margin:7px 0 15px">Cari musik</h1>
     <form class="search" id="searchForm"><input id="searchInput" autocomplete="off" placeholder="Cari lagu atau artis..." aria-label="Cari lagu atau artis"><button class="primary" type="submit">Cari ↗</button></form>
-    <div class="chips" style="margin-top:12px" aria-label="Sumber musik"><button class="chip source-chip active" id="sourceAudius" type="button">♫ AUDIUS</button><button class="chip source-chip" id="sourceYouTube" type="button">▶ YOUTUBE</button></div><p class="library-note" id="sourceHint">Audius: streaming audio langsung dari katalog Audius.</p>
+    <p class="library-note">Pencarian musik akan difokuskan ke YouTube Music melalui integrasi InnerTubeX.</p>
     <div class="sectionhead"><h2>Sector maps</h2></div><div class="chips">
       <button class="chip" data-query="Pop Indonesia">POP INDONESIA</button><button class="chip" data-query="Dangdut Koplo">DANGDUT / KOPLO</button><button class="chip" data-query="Indie Indonesia">INDIE</button><button class="chip" data-query="Lagu viral Indonesia">VIRAL</button><button class="chip" data-query="Cyberpunk beats">CYBERPUNK BEATS</button>
     </div>
@@ -104,7 +104,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   const audio = $('audio');
   let apiKey = localStorage.getItem('universe_music_audius_key') || '';
   let youtubeApiKey = localStorage.getItem('universe_music_youtube_key') || '';
-  let searchSource = 'audius';
+  let searchSource = 'youtube';
   let activeYouTubeVideo = null;
   let tracks = [];
   let currentIndex = -1;
@@ -139,7 +139,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     if (!saved.length) { $('tracks').innerHTML = '<div class="empty">Belum ada lagu favorit di katalog yang sedang dimuat. Cari lagu lalu tekan ♡ untuk menyimpan.</div>'; $('resultCount').textContent = '0 lagu'; }
   }
   document.querySelectorAll('.navbtn').forEach(btn => btn.addEventListener('click', () => setPage(btn.dataset.page)));
-  document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; if (searchSource === 'youtube') searchYouTube(btn.dataset.query); else searchTracks(btn.dataset.query); }));
+  document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; searchYouTube(btn.dataset.query); }));
   $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
@@ -294,8 +294,6 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     setStatus('Memutar video melalui pemutar resmi YouTube. Iklan dapat muncul.');
   }
   function closeYouTubePlayer() { $('youtubePlayerHost').innerHTML = ''; $('youtubeDialog').classList.remove('open'); activeYouTubeVideo = null; }
-  $('sourceAudius').addEventListener('click', () => { setSearchSource('audius'); if ($('searchInput').value.trim()) searchTracks($('searchInput').value); else loadPopular(); });
-  $('sourceYouTube').addEventListener('click', () => { setSearchSource('youtube'); if ($('searchInput').value.trim()) searchYouTube($('searchInput').value); else { $('listHeading').textContent = 'Cari di YouTube'; $('tracks').innerHTML = '<div class="empty">Masukkan judul lagu atau nama artis di kolom pencarian.</div>'; } });
   $('closeYouTube').addEventListener('click', closeYouTubePlayer);
   $('youtubeDialog').addEventListener('click', e => { if (e.target === $('youtubeDialog')) closeYouTubePlayer(); });
   $('openOnYouTube').addEventListener('click', () => { if (activeYouTubeVideo) window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(activeYouTubeVideo), '_blank', 'noopener,noreferrer'); });
@@ -413,7 +411,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
       setStatus('Streaming gagal dimulai. Cek API key, koneksi, atau ketersediaan lagu. '+error.message, true);
     }
   }
-  $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); if (searchSource === 'youtube') searchYouTube($('searchInput').value); else searchTracks($('searchInput').value); });
+  $('searchForm').addEventListener('submit', e => { e.preventDefault(); setPage('search'); searchYouTube($('searchInput').value); });
   $('settingsBtn').addEventListener('click', () => { $('apiKey').value = apiKey; $('youtubeApiKey').value = youtubeApiKey; $('settingsDialog').classList.add('open'); });
   $('cancelSettings').addEventListener('click', () => $('settingsDialog').classList.remove('open'));
   $('cancelCollection').addEventListener('click', () => { $('collectionDialog').classList.remove('open'); pendingCollectionTrack = null; });
