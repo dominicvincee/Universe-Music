@@ -1,10 +1,7 @@
 name: Build UNIVERSE MUSIC APK
 
 on:
-  # Temporary one-time validation trigger; will be restored to manual-only after this build.
-  push:
-    paths:
-      - 'README.md'
+  # APK builds remain manual-only after the one-time validation build.
   workflow_dispatch:
 
 permissions:
