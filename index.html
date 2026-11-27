@@ -136,7 +136,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     if (!saved.length) { $('tracks').innerHTML = '<div class="empty">Belum ada lagu favorit di katalog yang sedang dimuat. Cari lagu lalu tekan ♡ untuk menyimpan.</div>'; $('resultCount').textContent = '0 lagu'; }
   }
   document.querySelectorAll('.navbtn').forEach(btn => btn.addEventListener('click', () => setPage(btn.dataset.page)));
-  document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; searchYouTube(btn.dataset.query); }));
+  document.querySelectorAll('[data-query]').forEach(btn => btn.addEventListener('click', () => { setPage('search'); $('searchInput').value = btn.dataset.query; searchTracks(btn.dataset.query); }));
   $('featuredPlay').addEventListener('click', () => { setPage('home'); if (tracks.length) playTrack(0); else loadPopular(); });
   $('showFavorites').addEventListener('click', showFavoriteTracks);
   $('showPopular').addEventListener('click', loadPopular);
@@ -232,7 +232,6 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
   }
   $('backCollections').addEventListener('click', renderCollections);
   function setStatus(message, error=false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
-  function headers() { return apiKey ? {'x-api-key':apiKey} : {}; }
   window.onInnerTubeResult = (callbackId, payloadText) => {
     const callback = nativeCallbacks[callbackId];
     if (!callback) return;
@@ -315,7 +314,7 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
       const card = document.createElement('article');
       card.className = 'track';
       card.innerHTML = '<img class="cover" alt="" loading="lazy" src="'+escapeHTML(image)+'" onerror="this.src=\''+coverFallback+'\'"><div class="trackinfo"><div class="tracktitle" title="'+title+'">'+title+'</div><div class="artist">'+artist+'</div></div><div class="trackactions"><button class="heart '+(liked?'active':'')+'" aria-label="Favorit" title="Favorit">'+(liked?'♥':'♡')+'</button><button class="add-to-collection" aria-label="Tambah ke folder" title="Tambah ke folder">＋</button><button class="queueadd" aria-label="Tambah ke antrean" title="Tambah ke antrean">☷</button><button class="play" aria-label="Putar" title="Putar">▶</button></div>';
-      card.querySelector('.play').addEventListener('click', () => playTrack(index));
+      card.querySelector('.play').addEventListener('click', () => playTrack(index, items));
       card.querySelector('.add-to-collection').addEventListener('click', () => openCollectionPicker(items[index]));
       card.querySelector('.queueadd').addEventListener('click', () => addToQueue(items[index]));
       card.querySelector('.heart').addEventListener('click', () => toggleFavorite(id));
@@ -328,36 +327,11 @@ body{background:radial-gradient(ellipse at 50% -20%,#153d59 0,transparent 42%),r
     localStorage.setItem('universe_music_favorites', JSON.stringify([...favorites]));
     render(tracks);
   }
-  async function loadPopular() {
-    $('listHeading').textContent = 'Lagu populer';
-    $('tracks').innerHTML = '<div class="empty">Memuat katalog…</div>';
-    try {
-      // Audius read-only catalog endpoint. API key is optional on some deployments but
-      // a developer key is recommended/required by current API guidance.
-      const data = await api('/tracks/trending?limit=20');
-      tracks = Array.isArray(data) ? data : [];
-      render(tracks);
-      setStatus('Katalog siap. Pilih lagu untuk streaming.');
-    } catch (error) {
-      $('tracks').innerHTML = '<div class="empty">Katalog belum terhubung.</div>';
-      setStatus(apiKey ? error.message : 'Tambahkan Audius API key melalui ⚙ agar pencarian dan streaming dapat diuji.', true);
-    }
+  function loadPopular() {
+    $('listHeading').textContent = 'Musik YouTube';
+    searchInnerTube('popular music');
   }
-  async function searchTracks(query) {
-    if (!query.trim()) return loadPopular();
-    $('listHeading').textContent = 'Hasil pencarian';
-    $('tracks').innerHTML = '<div class="empty">Mencari musik…</div>';
-    setStatus('');
-    try {
-      const data = await api('/tracks/search?query='+encodeURIComponent(query.trim())+'&limit=25');
-      tracks = Array.isArray(data) ? data : [];
-      render(tracks);
-      setStatus('Pencarian selesai.');
-    } catch (error) {
-      $('tracks').innerHTML = '<div class="empty">Pencarian gagal.</div>';
-      setStatus(apiKey ? error.message : 'Masukkan Audius API key lewat tombol ⚙ terlebih dahulu.', true);
-    }
-  }
+  function searchTracks(query) { searchInnerTube(query); }
   function saveQueue() { localStorage.setItem('universe_music_queue', JSON.stringify(queueTracks)); }
   function addToQueue(track) {
     if (!track || !track.id) return;
