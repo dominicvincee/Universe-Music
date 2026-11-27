@@ -29,6 +29,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
+// Ktor JSON ContentNegotiation is configured for InnerTubeX request serialization.
 class InnerTubeBridge(private val activity: Activity, private val webView: WebView) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val clientDelegate = lazy {
