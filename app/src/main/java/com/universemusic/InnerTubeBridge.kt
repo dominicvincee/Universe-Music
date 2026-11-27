@@ -112,7 +112,7 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
                             result(callbackId, JSONObject().put("ok", false).put("error", "Pemutar gagal (kode $what/$extra)."))
                             true
                         }
-                        next.setDataSource(context, Uri.parse(stream.audioUrl), stream.headers)
+                        next.setDataSource(activity, Uri.parse(stream.audioUrl), stream.headers)
                         next.prepareAsync()
                     } catch (error: Exception) {
                         result(callbackId, JSONObject().put("ok", false).put("error", error.message ?: "Gagal menyiapkan pemutar."))
