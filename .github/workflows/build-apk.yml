@@ -53,7 +53,9 @@ jobs:
           git clone --depth 1 https://github.com/MetrolistGroup/innertubex.git /tmp/innertubex
           cd /tmp/innertubex
           sed -i 's/compileSdk = "37"/compileSdk = "36"/' gradle/libs.versions.toml
-          # Keep InnerTubeX on AGP 9.4.1 to match the locally published QuackJS artifact.
+          # The upstream version catalog explicitly pins AGP 9.5.0; align it with QuackJS.
+          sed -i 's/androidGradlePlugin = "9.5.0"/androidGradlePlugin = "9.4.1"/' gradle/libs.versions.toml
+          grep -n 'androidGradlePlugin' gradle/libs.versions.toml
           grep -RIn '9\.5\.0' . --include='*.kts' --include='*.toml' || true
           gradle -PuseLocalQuackJS publishToMavenLocal --stacktrace
 
