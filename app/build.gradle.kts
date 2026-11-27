@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.universemusic"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.universemusic"
@@ -24,6 +24,10 @@ android {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
+}
+
+configurations.configureEach {
+    resolutionStrategy.force("com.squareup.okhttp3:okhttp-android:5.4.0")
 }
 
 dependencies {
