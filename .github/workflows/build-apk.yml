@@ -1,7 +1,10 @@
 name: Build UNIVERSE MUSIC APK
 
 on:
-  # APK builds are intentionally manual while the YouTube Music + InnerTubeX migration is in progress.
+  # Temporary one-time validation trigger; will be restored to manual-only after this build.
+  push:
+    paths:
+      - 'README.md'
   workflow_dispatch:
 
 permissions:
