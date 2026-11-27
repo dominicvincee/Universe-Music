@@ -25,3 +25,5 @@ The static GitHub Pages UI does not have access to the Android native bridge. Se
 - Do not embed private API credentials in client-side code or an APK.
 
 See [LICENSE.md](LICENSE.md) and [ASSET_REGISTER.md](ASSET_REGISTER.md) before distributing or monetizing the project.
+
+Android build validation note: the app compile SDK is aligned with the workflow's installed Android SDK platform (API 36). The native YouTube Music + InnerTubeX bridge still requires an Android build and device playback test before it can be considered verified.
