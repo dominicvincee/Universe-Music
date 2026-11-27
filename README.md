@@ -1,22 +1,27 @@
 # UNIVERSE MUSIC
 
-A no-login music discovery and streaming prototype with a cosmic neon interface.
+A no-login music discovery prototype with a cosmic neon interface. The Android app is being migrated to YouTube Music search and audio stream extraction through InnerTubeX.
 
-## Current prototype
-- Trending music discovery through the Audius API
-- Search by track or artist
-- In-page audio player with previous / play-pause / next controls
-- Local favorites saved in the current browser/device
-- Responsive layout for Android phones and desktop browsers
-- No app account or user login
+## Current implementation
+- YouTube Music search through the native Android InnerTubeX bridge
+- Native Android audio extraction/playback, with play/pause, seek, volume, queue, and next/previous controls
+- Responsive cosmic-neon interface for Android phones
+- Local favorites and collections stored on the device
+- No app account or user login required
 
-## Run locally
-Open `index.html` in a browser or publish the static files using a static hosting service. Internet access is required for catalog search and streaming. Some browsers may restrict API/audio requests when opening a local file; if that happens, use a static web host.
+## Android build
+The APK workflow is intentionally manual while the YouTube Music + InnerTubeX migration is being completed. Do not install an APK until the migration has been compiled and tested.
+
+The Android project uses the InnerTubeX library and its stream extractor. YouTube can change its private interfaces at any time, so search and playback availability are not guaranteed. The current implementation is not yet runtime-verified.
+
+## Web version
+The static GitHub Pages UI does not have access to the Android native bridge. Search and playback through InnerTubeX are available only inside a compatible APK. Opening the page directly in a normal browser will not provide native InnerTubeX playback.
 
 ## Important limitations
-- The streaming catalog and playback availability depend on the third-party provider.
-- Favorites are stored locally and do not sync across devices.
-- API availability does not grant rights to all music or artwork. Review current provider terms and individual track permissions before commercial use.
+- InnerTubeX is an unofficial client for YouTube's interfaces and may break when YouTube changes them.
+- Some streams may not be available to the current playback client or Android MediaPlayer.
+- Favorites, queue, and collections are stored locally and do not sync across devices.
+- Music and artwork availability remain subject to YouTube's terms and applicable rights. No ad-free playback is promised.
 - Do not embed private API credentials in client-side code or an APK.
 
 See [LICENSE.md](LICENSE.md) and [ASSET_REGISTER.md](ASSET_REGISTER.md) before distributing or monetizing the project.
