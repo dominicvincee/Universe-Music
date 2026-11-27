@@ -1,14 +1,8 @@
 name: Build UNIVERSE MUSIC APK
 
 on:
+  # APK builds are intentionally manual while the YouTube Music + InnerTubeX migration is in progress.
   workflow_dispatch:
-  push:
-    paths:
-      - 'app/**'
-      - '*.gradle.kts'
-      - 'gradle.properties'
-      - 'settings.gradle.kts'
-      - '.github/workflows/build-apk.yml'
 
 permissions:
   contents: read
