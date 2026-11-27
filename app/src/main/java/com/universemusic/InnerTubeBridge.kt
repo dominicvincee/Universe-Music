@@ -84,7 +84,7 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
             try {
                 val stream = extractor.extract(
                     videoId = videoId,
-                    hints = ContentHints(wantVideo = false),
+                    hints = ContentHints(wantVideo = false).withStreamCapabilities(allowHls = true, allowSabr = false, allowBoundedRange = false, allowProgressive = false),
                     audioQuality = AudioQuality.HIGH
                 ) ?: error("InnerTubeX tidak menemukan stream audio yang bisa diputar.")
                 activity.runOnUiThread {
