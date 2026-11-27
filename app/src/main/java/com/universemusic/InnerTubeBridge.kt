@@ -2,6 +2,7 @@ package com.universemusic
 
 import android.app.Activity
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.webkit.JavascriptInterface
@@ -111,7 +112,7 @@ class InnerTubeBridge(private val activity: Activity, private val webView: WebVi
                             result(callbackId, JSONObject().put("ok", false).put("error", "Pemutar gagal (kode $what/$extra)."))
                             true
                         }
-                        next.setDataSource(stream.audioUrl, stream.headers)
+                        next.setDataSource(context, Uri.parse(stream.audioUrl), stream.headers)
                         next.prepareAsync()
                     } catch (error: Exception) {
                         result(callbackId, JSONObject().put("ok", false).put("error", error.message ?: "Gagal menyiapkan pemutar."))
