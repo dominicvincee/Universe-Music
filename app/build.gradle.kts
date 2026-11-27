@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.universemusic"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.universemusic"
@@ -28,6 +28,6 @@ android {
 }
 
 dependencies {
-    implementation("com.github.MetrolistGroup.innertubex:innertubex:v0.13.1")
+    implementation("com.github.MetrolistGroup:innertubex:v0.13.2")
     implementation("io.ktor:ktor-client-okhttp:3.6.0")
 }
