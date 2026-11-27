@@ -1,4 +1,4 @@
-// Build trigger: package the latest web player and automatic next-track changes into the APK.
+// Build trigger: rebuild APK after fixing the dashboard JavaScript parser error.
 package com.universemusic
 
 import android.app.Activity
